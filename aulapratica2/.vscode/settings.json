@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "memlog.h": "c",
+    "vet.h": "c"
+  }
+}

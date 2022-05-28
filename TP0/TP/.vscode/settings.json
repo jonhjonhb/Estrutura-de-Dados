@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "msgassert.h": "c",
+    "iomanip": "cpp"
+  }
+}
