@@ -17,6 +17,8 @@ class Carta{
     void imprimeCarta();
     //getters
     Carta getCarta(){return *this;};
+    int getValor(){return valor;};
+    std::string getNaipe(){return naipe;};
     //setters
     void setValor(int x){valor = x;};
     void setNaipe(std::string strNaipe){naipe = strNaipe;};
