@@ -5,6 +5,7 @@
 int main(){
   Poker mesa;
   mesa.iniciaJogo();
+
   return 0;
 }
 

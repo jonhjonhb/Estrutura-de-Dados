@@ -15,6 +15,7 @@ class Carta{
     // funcoes
     void apaga(){delete this;};
     void imprimeCarta();
+    bool noIntervalo(int inicio, int fim){return (valor >= inicio) && (valor <= fim);};
     //getters
     Carta getCarta(){return *this;};
     int getValor(){return valor;};
@@ -37,12 +38,15 @@ class Jogador{
     //funcoes
     bool isVazio(){return (name == "" && amount == 0);};
     void limpaMao();
+    bool contemCarta(int valor);
+    int numCartas(int numero);
     //setters
     void setAtributtes(std::string a, double b){setName(a), setAmount(b);};
     void setName(std::string a){name = a;};
     void setAmount(int b){amount = b;};
     void setMao(std::string *strCarta);
     //getters
+    std::string getClassificacao();
     std::string getName(){return name;};
     int getAmount(){return amount;};
     void getValores();
