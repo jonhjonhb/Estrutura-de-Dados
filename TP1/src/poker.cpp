@@ -57,7 +57,7 @@ void Jogador::limpaMao(){
   }
 }
 
-int Jogador::debitaDinheiro(int dinheiro){
+void Jogador::debitaDinheiro(int dinheiro){
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
@@ -127,12 +127,32 @@ void Poker::getInfoJogadores(){
   }
 }
 
+void leCartas(std::string *line, std::string *carta){
+  int j = 1;
+  for (int i = 0; i < NUM_CARTAS; i++){
+    carta[i] = "";
+    for (j = 1; line->substr(line->size() - j, 1) != " " ; j++){}
+    carta[i] = line->substr(line->size() - j + 1);
+    *line = line->substr(0, line->size() - j);
+  }
+}
+
+void leAposta(std::string *line, int *aposta){
+  int j = 1;
+  if(line->substr(line->size(), 1) == " "){
+    *line = line->substr(0, line->size() - 1);
+  }
+  for (j = 1; line->substr(line->size() - j,1) != " "; j++){}
+  *aposta = std::stoi(line->substr(line->size() - j + 1));
+  *line = line->substr(0, line->size() - j);
+}
+
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
   int numPlayers = 0, pingo = 0, aposta = 0,  j = 0;  
   std::ifstream file ("entrada.txt");
-  // erroAssert(file != NULL,"Não foi possivel abrir o arquivo!");
   std::string nome = "";
+  std::string line = "";
   std::string carta[NUM_CARTAS];
   file >> rodadas >> dinInicial;
   srand(time(NULL));
@@ -141,8 +161,11 @@ void Poker::iniciaJogo(){
     setNumJogadores(numPlayers);
     setPingo(pingo);
     for (j = 0; j < numPlayers; j++){
-      file >> nome >> aposta;
-      file >> carta[0] >> carta[1] >> carta[2] >> carta[3] >> carta[4];
+      getline(file, line);
+      if(line=="") getline(file, line);
+      leCartas(&line, carta);
+      leAposta(&line, &aposta);
+      nome = line;
       incluiJogador(new Jogador(nome, dinInicial, carta));
     }
   }

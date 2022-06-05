@@ -42,6 +42,7 @@ class Jogador{
     void limpaMao();
     bool contemCarta(int valor);
     int numCartas(int numero);
+    void debitaDinheiro(int dinheiro);
     //setters
     void setAtributtes(std::string a, double b){setName(a), setAmount(b);};
     void setName(std::string a){name = a;};
@@ -52,7 +53,6 @@ class Jogador{
     std::string getName(){return name;};
     int getAmount(){return amount;};
     void getValores();
-    int debitaDinheiro(int dinheiro);
   private:  
     std::string name;
     int amount;
