@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <cstdio>
+#include <fstream>
 
 #define NUM_CARTAS 5
 
@@ -54,7 +56,7 @@ class Jogador{
   private:  
     std::string name;
     int amount;
-    Carta mao[5];
+    Carta mao[NUM_CARTAS];
     friend class Poker;
 };
 

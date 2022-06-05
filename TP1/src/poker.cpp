@@ -35,7 +35,7 @@ void Poker::leLinha(std::string str){
 
 void Jogador::getValores(){
   std::cout << this->name << " " << this->amount;
-  for(int i = 0; i < 5 ; i++){
+  for(int i = 0; i < NUM_CARTAS; i++){
     std::cout << " ";
     this->mao[i].imprimeCarta();
   } 
@@ -45,14 +45,14 @@ void Jogador::getValores(){
 
 void Jogador::setMao(std::string *strCarta){
   int i = 0;
-  for (i = 0; i < 5; i++){
+  for (i = 0; i < NUM_CARTAS; i++){
     mao[i] = Carta(strCarta[i]);
   }
 }
 
 void Jogador::limpaMao(){
   int i = 0;
-  for (i = 0; i < 5; i++){
+  for (i = 0; i < NUM_CARTAS; i++){
     mao[i].apaga();
   }
 }
@@ -71,7 +71,7 @@ int Jogador::getPingo(){
 
 bool Jogador::contemCarta(int numero){
   int i = 0;
-  for (i = 0; i < 5; i++){
+  for (i = 0; i < NUM_CARTAS; i++){
     if (mao[i].valor == numero)
       return true;
   }
@@ -80,7 +80,7 @@ bool Jogador::contemCarta(int numero){
 
 int Jogador::numCartas(int numero){
   int i = 0, contador = 0;
-  for (i = 0; i < 5; i++){
+  for (i = 0; i < NUM_CARTAS; i++){
     if (mao[i].valor == numero){contador++;}
   }
   return contador;
@@ -132,25 +132,28 @@ void Poker::getInfoJogadores(){
   for(int i = 0; i < numPlayers ; i++){
     jogadores[i].getValores();
   }
-  return;
 }
 
 void Poker::iniciaJogo(){
-  int dinInicial = 0, rodadas = 0, i = 0;  
+  int dinInicial = 0, rodadas = 0, i = 0;
   int numPlayers = 0, pingo = 0, aposta = 0,  j = 0;  
+  std::ifstream file ("entrada.txt");
+  // erroAssert(file != NULL,"Não foi possivel abrir o arquivo!");
   std::string nome = "";
-  std::string c[NUM_CARTAS];
+  std::string carta[NUM_CARTAS];
+  file >> rodadas >> dinInicial;
   srand(time(NULL));
-  std::cin >> rodadas >> dinInicial;
   for (i = 0; i < rodadas; i++){
-    std::cin >> numPlayers >> pingo;
+    file >> numPlayers >> pingo;
     setNumJogadores(numPlayers);
     setPingo(pingo);
     for (j = 0; j < numPlayers; j++){
-      std::cin >> nome >> aposta >> c[0] >> c[1] >> c[2] >> c[3] >> c[4];
-      incluiJogador(new Jogador(nome, dinInicial, c));
+      file >> nome >> aposta;
+      file >> carta[0] >> carta[1] >> carta[2] >> carta[3] >> carta[4];
+      incluiJogador(new Jogador(nome, dinInicial, carta));
     }
   }
+  file.close();
   std::cout << std::endl;
   getInfoJogadores();
 }
