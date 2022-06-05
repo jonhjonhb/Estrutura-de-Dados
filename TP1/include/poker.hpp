@@ -52,7 +52,7 @@ class Jogador{
     std::string getName(){return name;};
     int getAmount(){return amount;};
     void getValores();
-    int getPingo();
+    int debitaDinheiro(int dinheiro);
   private:  
     std::string name;
     int amount;

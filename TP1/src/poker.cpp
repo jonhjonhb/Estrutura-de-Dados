@@ -57,16 +57,9 @@ void Jogador::limpaMao(){
   }
 }
 
-int Jogador::getPingo(){
-  int pingo = 0;
-  // erroAssert(this->amount < 50,"O jogador não possui dinheiro suficiente!");
-  if(getAmount() == MIN_PINGO){
-    amount -= MIN_PINGO;
-    return MIN_PINGO;
-  }
-  pingo = MIN_PINGO * (rand() % (amount/MIN_PINGO) + 1); 
-  amount -= pingo;
-  return pingo;
+int Jogador::debitaDinheiro(int dinheiro){
+  // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
+  amount -= dinheiro;
 }
 
 bool Jogador::contemCarta(int numero){
