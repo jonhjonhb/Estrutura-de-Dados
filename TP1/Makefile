@@ -22,7 +22,7 @@ BIN = bin
 FER = -g
 OBJS = $(OBJ)/poker.o $(OBJ)/jogo.o 
 HDRS = $(INC)/poker.hpp
-CFLAGS = $(FER) -Wall -c -I$(INC)
+CFLAGS = $(FER) -Wall -c -I$(INC) # -O3
 
 EXE = $(BIN)/jogo
 
@@ -38,3 +38,6 @@ $(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
 	
 clean:
 	rm -f $(EXE) $(OBJS) *.out
+
+jogar: $(EXE) 
+	$(EXE)

@@ -11,6 +11,11 @@ void Carta::imprimeCarta(){
   std::cout << valor << naipe;
 };
 
+void Carta::apaga(){
+  valor = 0;
+  naipe = "";
+};
+
 void Poker::alocarJogadores(){
   // erroAssert(this->amount < 50,"O jogador não possui dinheiro suficiente!");
   jogadores = (Jogador*)malloc(numPlayers*sizeof(Jogador));
@@ -23,7 +28,7 @@ void Poker::setNumJogadores(int num){
 
 void Poker::incluiJogador(Jogador *newPlayer){
   int i = 0;
-  while(!(jogadores[i].isVazio()) && (i < numPlayers)){
+  while(!(jogadores[i].isEmpty()) && (i < numPlayers)){
     i++;
   }
   jogadores[i] = *newPlayer;
@@ -39,11 +44,11 @@ void Jogador::getValores(){
     std::cout << " ";
     this->mao[i].imprimeCarta();
   } 
-  std::cout << std::endl; 
+  std::cout << std::endl;
   return;
 }
 
-void Jogador::setMao(std::string *strCarta){
+void Jogador::setMao(std::string strCarta[]){
   int i = 0;
   for (i = 0; i < NUM_CARTAS; i++){
     mao[i] = Carta(strCarta[i]);
@@ -57,7 +62,13 @@ void Jogador::limpaMao(){
   }
 }
 
+void Jogador::debitaPingo(int dinheiro){
+  // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
+  amount -= dinheiro;
+}
+
 void Jogador::debitaDinheiro(int dinheiro){
+  if(mao[1].isEmpty()){return;}
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
@@ -79,12 +90,47 @@ int Jogador::numCartas(int numero){
   return contador;
 }
 
+void Jogador::aumentaCartaAs(){
+  int i = 0;
+  for(i = 0; i < NUM_CARTAS; i++){
+    if (mao[i].getValor() == 1){
+      mao[i].setValor(14);
+    }
+  }
+}
+
+void Jogador::diminuirCartaAs(){
+  int i = 0;
+  for(i = 0; i < NUM_CARTAS; i++){
+    if (mao[i].getValor() == 14){
+      mao[i].setValor(1);
+    }
+  }
+}
+
+void Jogador::ordenarCartas(){
+  int i = 0, j = 0, maior = 0;
+  Carta aux;
+  aumentaCartaAs();
+  for(i = 0; i < NUM_CARTAS; i++){
+    maior = i;
+    for(j = i + 1; j < NUM_CARTAS; j++){
+      if(mao[j].getValor() > mao[maior].getValor())
+        maior = j;
+    }
+    aux = mao[i];
+    mao[i] = mao[maior];
+    mao[maior] = aux;
+  }
+  diminuirCartaAs();
+}
+
 bool equalFour(int numero){return numero == 4;}
 bool equalThree(int numero){return numero == 3;}
 bool equalTwo(int numero){return numero == 2;}
 bool equalOne(int numero){return numero == 1;}
 
-std::string Jogador::getClassificacao(){
+clasificacao Jogador::getClassificacao(){
 	bool naipesIguais = false, sequencia = false;
 	bool quatroCartas = false, tresCartas = false;
 	bool duasCartas = false;
@@ -93,13 +139,13 @@ std::string Jogador::getClassificacao(){
 	 							 (mao[2].getNaipe() == mao[3].getNaipe()) && 
 								 (mao[0].getNaipe() == mao[4].getNaipe()) && 
 								 (mao[2].getNaipe() == mao[1].getNaipe());
-	for (int i = 1; i < 14; i++){
+	for (int i = 0; i < 14; i++){
     if(!sequencia){
-      sequencia = this->contemCarta(i%13) && this->contemCarta((i+1)%13) && this->contemCarta((i+2)%13) && this->contemCarta((i+3)%13) && this->contemCarta((i+4)%13);
+      sequencia = contemCarta(i%13+1) && contemCarta((i+1)%13+1) && contemCarta((i+2)%13+1) && contemCarta((i+3)%13+1) && contemCarta((i+4)%13+1);
     }
-    if(equalFour(this->numCartas(i))){quatroCartas = true;}
-    if(equalThree(this->numCartas(i))){tresCartas = true;}
-    if(equalTwo(this->numCartas(i))){
+    if(equalFour(numCartas(i))){quatroCartas = true;}
+    if(equalThree(numCartas(i))){tresCartas = true;}
+    if(equalTwo(numCartas(i))){
         numParesCartas++;
         duasCartas = true;
     }
@@ -108,17 +154,17 @@ std::string Jogador::getClassificacao(){
   if(naipesIguais){
 		if(this->contemCarta(10) && this->contemCarta(11) && this->contemCarta(12) && this->contemCarta(13) && 
        this->contemCarta(1)){ // Royal Straight Flush [RSF]
-			return "RSF";
-		}else if(sequencia){return "SF";}// Straight Flush [SF]
-     else {return "F";} // Flush [F]
-	}else{ if(sequencia){return "S";} } // Straight [S]
+			return Royal_Straight_Flush;
+		}else if(sequencia){return Straight_Flush;}// Straight Flush [SF]
+     else {return Flush;} // Flush [F]
+	}else { if(sequencia){return Straight;} } // Straight [S]
   
-  if(quatroCartas){return "FK";} // Four of a kind [FK]
-  if(tresCartas && duasCartas){return "FH";} // Full House [FH]
-  if(tresCartas && !duasCartas){return "TK";} // Three of a kind [TK]
-  if(equalTwo(numParesCartas)){return "TP";} // Two Pairs [TP]
-  if(equalOne(numParesCartas)){return "OP";} // One Pair [OP]
-  return "";
+  if(quatroCartas){return Four_of_a_kind;} // Four of a kind [FK]
+  if(tresCartas && duasCartas){return Full_House;} // Full House [FH]
+  if(tresCartas && !duasCartas){return Three_of_a_kind;} // Three of a kind [TK]
+  if(equalTwo(numParesCartas)){return Two_Pairs;} // Two Pairs [TP]
+  if(equalOne(numParesCartas)){return One_Pair;} // One Pair [OP]
+  return Invalid;
 }
 
 void Poker::getInfoJogadores(){
@@ -127,49 +173,214 @@ void Poker::getInfoJogadores(){
   }
 }
 
-void leCartas(std::string *line, std::string *carta){
+int Poker::getPingo(){
+  int sum = 0;
+  for (int i = 0; i < numPlayers; i++){
+   jogadores[i].debitaPingo(pingoMinimo); 
+   sum += pingoMinimo;
+  }
+  return sum;
+}
+
+void leCartas(std::string &line, std::string carta[]){
   int j = 1;
   for (int i = 0; i < NUM_CARTAS; i++){
     carta[i] = "";
-    for (j = 1; line->substr(line->size() - j, 1) != " " ; j++){}
-    carta[i] = line->substr(line->size() - j + 1);
-    *line = line->substr(0, line->size() - j);
+    for (j = 1; line.substr(line.size() - j, 1) != " " ; j++){}
+    carta[i] = line.substr(line.size() - j + 1);
+    line = line.substr(0, line.size() - j);
   }
 }
 
-void leAposta(std::string *line, int *aposta){
+void leAposta(std::string &line, int &aposta){
   int j = 1;
-  if(line->substr(line->size(), 1) == " "){
-    *line = line->substr(0, line->size() - 1);
+  if(line.substr(line.size(), 1) == " "){
+    line = line.substr(0, line.size() - 1);
   }
-  for (j = 1; line->substr(line->size() - j,1) != " "; j++){}
-  *aposta = std::stoi(line->substr(line->size() - j + 1));
-  *line = line->substr(0, line->size() - j);
+  for (j = 1; line.substr(line.size() - j,1) != " "; j++){}
+  aposta = std::stoi(line.substr(line.size() - j + 1));
+  line = line.substr(0, line.size() - j);
+}
+
+void Poker::limparCartas(){
+  for (int i = 0; i < numPlayers ; i++){
+    jogadores[i].limpaMao();
+  }
+}
+
+void Poker::novaRodada(std::string nome, std::string carta[],int aposta){
+  for (int i = 0; i < numPlayers; i++){
+    if (jogadores[i].getName() == nome){
+      jogadores[i].setMao(carta);
+      jogadores[i].ordenarCartas();
+      jogadores[i].debitaDinheiro(aposta);
+      return;
+    }
+  }
+}
+
+std::string converterClassificao(clasificacao rank){
+  switch(rank){
+    case High_Card:
+      return "HC";
+    case One_Pair:
+      return "OP";
+    case Two_Pairs:
+      return "TP";
+    case Three_of_a_kind:
+      return "TK";
+    case Straight:
+      return "S";
+    case Flush:
+      return "F";
+    case Full_House:
+      return "FH";
+    case Four_of_a_kind:
+      return "FK";
+    case Straight_Flush:
+      return "SF";
+    case Royal_Straight_Flush:
+      return "RSF";
+    default:
+      return "";
+  }
+}
+
+void Poker::desempate(clasificacao rank, int posJogador[]){
+  int i = 0;
+  for (i = 0; i < numPlayers; i++){
+    jogadores[i].aumentaCartaAs();
+  }
+  switch(rank){
+    case High_Card:
+      break;
+    case One_Pair:
+      break;
+    case Two_Pairs:
+      break;
+    case Three_of_a_kind:
+      break;
+    case Straight:
+      break;
+    case Flush:
+      break;
+    case Full_House:
+      break;
+    case Four_of_a_kind:
+      // for (int i = 0; i < count; i++)
+      // {
+      //   /* code */
+      // }
+          
+      break;
+    default:
+      break;
+  }
+  for (i = 0; i < numPlayers; i++){
+    jogadores[i].diminuirCartaAs();
+  }
+}
+
+void Poker::getVencedor(std::ofstream &arqSaida){
+  clasificacao ranking[numPlayers];
+  int i = 0, numVencedores = 1;
+  int posJogadorMaior[] = {-1,-1,-1,-1,-1};
+  for (i = 0; i < numPlayers; i++){
+    if (jogadores[i].mao[0].isEmpty()){
+      ranking[i] = Invalid;
+      continue;
+    }
+    ranking[i] = jogadores[i].getClassificacao();
+  }
+  for (i = 0; i < numPlayers; i++){
+    posJogadorMaior[0] = ranking[i] > posJogadorMaior[0] ? i : posJogadorMaior[0];
+  }
+  for (i = 0; i < numPlayers; i++){
+    if(posJogadorMaior[0] == i){continue;}
+    if(ranking[i] == ranking[posJogadorMaior[0]]){
+      posJogadorMaior[numVencedores] = i;
+      numVencedores++;
+    }
+  }
+  arqSaida << numVencedores << " " << getPote()/numVencedores << " ";
+  arqSaida << converterClassificao(ranking[posJogadorMaior[0]]) << "\n";
+  if(numVencedores > 1){
+    desempate(ranking[posJogadorMaior[0]], posJogadorMaior);
+  }
+  for (i = 0; i < numVencedores; i++){
+    arqSaida << jogadores[posJogadorMaior[i]].getName() << "\n";
+    jogadores[posJogadorMaior[i]].amount += getPote()/numVencedores;
+  }
+}
+
+void Poker::ordenarJogadores(){
+  int i = 0, j = 0, maior = 0;
+  Jogador aux;
+  for(i = 0; i < numPlayers; i++){
+    maior = i;
+    for(j = i + 1; j < numPlayers; j++){
+      if(jogadores[j].getAmount() > jogadores[maior].getAmount())
+        maior = j;
+    }
+    aux = jogadores[i];
+    jogadores[i] = jogadores[maior];
+    jogadores[maior] = aux;
+  }
 }
 
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
-  int numPlayers = 0, pingo = 0, aposta = 0,  j = 0;  
+  int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;  
   std::ifstream file ("entrada.txt");
+  std::ofstream arqSaida("saida.txt");
   std::string nome = "";
   std::string line = "";
   std::string carta[NUM_CARTAS];
   file >> rodadas >> dinInicial;
-  srand(time(NULL));
   for (i = 0; i < rodadas; i++){
-    file >> numPlayers >> pingo;
-    setNumJogadores(numPlayers);
-    setPingo(pingo);
-    for (j = 0; j < numPlayers; j++){
-      getline(file, line);
-      if(line=="") getline(file, line);
-      leCartas(&line, carta);
-      leAposta(&line, &aposta);
-      nome = line;
-      incluiJogador(new Jogador(nome, dinInicial, carta));
+    if(i==0){
+      file >> numJogadores >> pingo;
+      setNumJogadores(numJogadores);
+      setPingo(pingo);
+      for (j = 0; j < numJogadores; j++){
+        getline(file, line);
+        if(line=="") getline(file, line);
+        leCartas(line, carta);
+        leAposta(line, aposta);
+        nome = line;
+        incluiJogador(new Jogador(nome, dinInicial, carta));
+        jogadores[j].ordenarCartas();
+        jogadores[j].debitaDinheiro(aposta);
+        somaPote(aposta);
+      }
+      somaPote(getPingo());
+      getVencedor(arqSaida);
+      limparCartas();
+      zerarPote();
+    }else{
+      file >> numJogadores >> pingo;
+      setPingo(pingo);
+      for (j = 0; j < numJogadores; j++){
+        getline(file, line);
+        if(line=="") getline(file, line);
+        leCartas(line, carta);
+        leAposta(line, aposta);
+        nome = line;
+        novaRodada(nome,carta,aposta);
+        somaPote(aposta);
+      }
+      somaPote(getPingo());
+      getVencedor(arqSaida);
+      limparCartas();
+      zerarPote();
     }
   }
+  arqSaida << "####\n";
+  ordenarJogadores();
+  for (j = 0; j < numPlayers; j++){
+    arqSaida << jogadores[j].getName() << " " << jogadores[j].getAmount() << "\n";
+  }
   file.close();
-  std::cout << std::endl;
+  arqSaida.close();
   getInfoJogadores();
 }

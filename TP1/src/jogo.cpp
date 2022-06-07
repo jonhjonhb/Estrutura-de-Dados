@@ -1,5 +1,4 @@
 #include "poker.hpp"
-#include <ctime>
 
 int main(){
   Poker mesa;
