@@ -92,7 +92,7 @@ class Poker{
     void novaRodada(std::string nome, std::string carta[], int aposta);
     void desempate(clasificacao rank, int posJogador[]);
     void setNumJogadores(int num);
-    void setPingo(int valorPingoMin){pingoMinimo = valorPingoMin;};
+    void setPingo(int valorPingoMin);
     void getVencedor(std::ofstream &arqSaida);
     int getPingo();
     int getPote(){return pote;};

@@ -2,6 +2,8 @@
 
 #define MIN_PINGO 50
 
+bool rodadaInvalida = false;
+
 Carta::Carta(std::string str){
   valor = std::stoi(str.substr(0, str.size() - 1));
   naipe = str.substr(str.size() - 1);
@@ -22,8 +24,10 @@ void Poker::alocarJogadores(){
 }
 
 void Poker::setNumJogadores(int num){
-  numPlayers = num;
-  alocarJogadores();
+  if(num <= 10){
+    numPlayers = num;
+    alocarJogadores();
+  }
 }
 
 void Poker::incluiJogador(Jogador *newPlayer){
@@ -32,10 +36,7 @@ void Poker::incluiJogador(Jogador *newPlayer){
     i++;
   }
   jogadores[i] = *newPlayer;
-}
-
-void Poker::leLinha(std::string str){
-  
+  jogadores[i].ordenarCartas();
 }
 
 void Jogador::getValores(){
@@ -173,6 +174,14 @@ void Poker::getInfoJogadores(){
   }
 }
 
+void Poker::setPingo(int valorPingoMin){
+  if (valorPingoMin % MIN_PINGO == 0){
+    pingoMinimo = valorPingoMin;
+  } else {
+    rodadaInvalida = true;
+  }
+};
+
 int Poker::getPingo(){
   int sum = 0;
   for (int i = 0; i < numPlayers; i++){
@@ -247,12 +256,23 @@ std::string converterClassificao(clasificacao rank){
 }
 
 void Poker::desempate(clasificacao rank, int posJogador[]){
-  int i = 0;
+  int i = 0, numVencedores = 0;
   for (i = 0; i < numPlayers; i++){
     jogadores[i].aumentaCartaAs();
+    numVencedores = posJogador[i] != -1 ? numVencedores + 1: numVencedores;
   }
   switch(rank){
     case High_Card:
+      for (i = 0; i < NUM_CARTAS; i++){
+        if(jogadores[posJogador[0]].mao[i].getValor() == jogadores[posJogador[1]].mao[i].getValor())
+          continue;
+        if(jogadores[posJogador[0]].mao[i].getValor() > jogadores[posJogador[1]].mao[i].getValor()){
+          posJogador[1] = -1;
+        }else {
+          posJogador[0] = posJogador[1];
+          posJogador[1] = -1;
+        }
+      }
       break;
     case One_Pair:
       break;
@@ -267,11 +287,7 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
     case Full_House:
       break;
     case Four_of_a_kind:
-      // for (int i = 0; i < count; i++)
-      // {
-      //   /* code */
-      // }
-          
+      
       break;
     default:
       break;
@@ -338,10 +354,10 @@ void Poker::iniciaJogo(){
   std::string carta[NUM_CARTAS];
   file >> rodadas >> dinInicial;
   for (i = 0; i < rodadas; i++){
+    file >> numJogadores >> pingo;
+    setPingo(pingo);
     if(i==0){
-      file >> numJogadores >> pingo;
       setNumJogadores(numJogadores);
-      setPingo(pingo);
       for (j = 0; j < numJogadores; j++){
         getline(file, line);
         if(line=="") getline(file, line);
@@ -353,13 +369,7 @@ void Poker::iniciaJogo(){
         jogadores[j].debitaDinheiro(aposta);
         somaPote(aposta);
       }
-      somaPote(getPingo());
-      getVencedor(arqSaida);
-      limparCartas();
-      zerarPote();
     }else{
-      file >> numJogadores >> pingo;
-      setPingo(pingo);
       for (j = 0; j < numJogadores; j++){
         getline(file, line);
         if(line=="") getline(file, line);
@@ -368,12 +378,12 @@ void Poker::iniciaJogo(){
         nome = line;
         novaRodada(nome,carta,aposta);
         somaPote(aposta);
-      }
-      somaPote(getPingo());
-      getVencedor(arqSaida);
-      limparCartas();
-      zerarPote();
+      }  
     }
+    somaPote(getPingo());
+    getVencedor(arqSaida);
+    limparCartas();
+    zerarPote();
   }
   arqSaida << "####\n";
   ordenarJogadores();
