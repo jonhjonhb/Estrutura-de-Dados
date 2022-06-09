@@ -1,6 +1,7 @@
 #include "poker.hpp"
 
 #define MIN_PINGO 50
+#define MAX_JOGADOR 10
 
 bool rodadaInvalida = false;
 
@@ -24,7 +25,7 @@ void Poker::alocarJogadores(){
 }
 
 void Poker::setNumJogadores(int num){
-  if(num <= 10){
+  if(num <= MAX_JOGADOR){
     numPlayers = num;
     alocarJogadores();
   }
@@ -256,22 +257,30 @@ std::string converterClassificao(clasificacao rank){
 }
 
 void Poker::desempate(clasificacao rank, int posJogador[]){
-  int i = 0, numVencedores = 0;
+  int i = 0, j = 0, k = 0, numVencedores = 0;
   for (i = 0; i < numPlayers; i++){
     jogadores[i].aumentaCartaAs();
     numVencedores = posJogador[i] != -1 ? numVencedores + 1: numVencedores;
   }
   switch(rank){
     case High_Card:
-      for (i = 0; i < NUM_CARTAS; i++){
-        if(jogadores[posJogador[0]].mao[i].getValor() == jogadores[posJogador[1]].mao[i].getValor())
-          continue;
-        if(jogadores[posJogador[0]].mao[i].getValor() > jogadores[posJogador[1]].mao[i].getValor()){
-          posJogador[1] = -1;
-        }else {
-          posJogador[0] = posJogador[1];
-          posJogador[1] = -1;
+      while (j < numPlayers - 1){
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[j] == -1 || posJogador[k] == -1)
+            continue;
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+              break;
+            }else {
+              posJogador[j] = -1;
+              break;
+            }
+          }
         }
+        j++;
       }
       break;
     case One_Pair:
@@ -347,6 +356,7 @@ void Poker::ordenarJogadores(){
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
   int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;  
+  int apost[MAX_JOGADOR];
   std::ifstream file ("entrada.txt");
   std::ofstream arqSaida("saida.txt");
   std::string nome = "";
