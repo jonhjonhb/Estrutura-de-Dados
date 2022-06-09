@@ -513,7 +513,7 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
 void Poker::getVencedor(std::ofstream &arqSaida){
   clasificacao ranking[numPlayers];
   int i = 0, numVencedores = 1;
-  int posJogadorMaior[] = {-1,-1,-1,-1,-1};
+  int posJogadorMaior[] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
   for (i = 0; i < numPlayers; i++){
     if (jogadores[i].mao[0].isEmpty()){
       ranking[i] = Invalid;
@@ -536,7 +536,9 @@ void Poker::getVencedor(std::ofstream &arqSaida){
   if(numVencedores > 1){
     desempate(ranking[posJogadorMaior[0]], posJogadorMaior);
   }
-  for (i = 0; i < numVencedores; i++){
+  for (i = 0; i < 10 && i < numPlayers; i++){
+    if(posJogadorMaior[i] == -1)
+      continue;
     arqSaida << jogadores[posJogadorMaior[i]].getName() << "\n";
     jogadores[posJogadorMaior[i]].amount += getPote()/numVencedores;
   }
