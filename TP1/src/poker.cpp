@@ -92,11 +92,13 @@ int Jogador::numCartas(int numero){
   return contador;
 }
 
-int Jogador::getValorPar(){
+int Jogador::getValorPar(int ordem = 1){
   int i = 0, contador = 0;
-  for (i = 1; i < 14; i++){
-    if(numCartas(i) == 2)
-      return i; 
+  for (i = 13; i > 0; i--){      
+      if(numCartas(i) == 2)
+        contador++;
+      if(contador == ordem) 
+        return i;
   }
 }
 
@@ -323,6 +325,40 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       }
       break;
     case Two_Pairs:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
+            posJogador[j] = -1;
+            continue;
+          }
+          if(jogadores[posJogador[j]].getValorPar(2) > jogadores[posJogador[k]].getValorPar(2)){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorPar(2) < jogadores[posJogador[k]].getValorPar(2)){
+            posJogador[j] = -1;
+            continue;
+          }
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+              break;
+            }else {
+              posJogador[j] = -1;
+              break;
+            }
+          }
+        }
+        j++;
+      }
       break;
     case Three_of_a_kind:
       break;
