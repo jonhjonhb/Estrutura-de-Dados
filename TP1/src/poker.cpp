@@ -94,10 +94,26 @@ int Jogador::numCartas(int numero){
 
 int Jogador::getValorPar(int ordem = 1){
   int i = 0, contador = 0;
-  for (i = 13; i > 0; i--){      
+  for (i = 14; i > 0; i--){      
       if(numCartas(i) == 2)
         contador++;
       if(contador == ordem) 
+        return i;
+  }
+}
+
+int Jogador::getValorTripla(){
+  int i = 0;
+  for (i = 1; i < 15; i--){      
+      if(numCartas(i) == 3)
+        return i;
+  }
+}
+
+int Jogador::getValorQuadra(){
+  int i = 0;
+  for (i = 1; i < 15; i--){      
+      if(numCartas(i) == 4)
         return i;
   }
 }
@@ -361,6 +377,33 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       }
       break;
     case Three_of_a_kind:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].getValorTripla() > jogadores[posJogador[k]].getValorTripla()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorTripla() < jogadores[posJogador[k]].getValorTripla()){
+            posJogador[j] = -1;
+            continue;
+          }
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+              break;
+            }else {
+              posJogador[j] = -1;
+              break;
+            }
+          }
+        }
+        j++;
+      }
       break;
     case Straight:
       break;
@@ -369,7 +412,33 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
     case Full_House:
       break;
     case Four_of_a_kind:
-      
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].getValorQuadra() > jogadores[posJogador[k]].getValorQuadra()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorQuadra() < jogadores[posJogador[k]].getValorQuadra()){
+            posJogador[j] = -1;
+            continue;
+          }
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+              break;
+            }else {
+              posJogador[j] = -1;
+              break;
+            }
+          }
+        }
+        j++;
+      }
       break;
     default:
       break;
