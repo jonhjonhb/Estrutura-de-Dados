@@ -406,10 +406,69 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       }
       break;
     case Straight:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+            break;
+          }else {
+            posJogador[j] = -1;
+            break;
+          }
+        }
+        j++;
+      }
       break;
     case Flush:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+            break;
+          }else {
+            posJogador[j] = -1;
+            break;
+          }
+        }
+        j++;
+      }
       break;
     case Full_House:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].getValorTripla() > jogadores[posJogador[k]].getValorTripla()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorTripla() < jogadores[posJogador[k]].getValorTripla()){
+            posJogador[j] = -1;
+            continue;
+          }
+          if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
+            posJogador[j] = -1;
+            continue;
+          }
+        }
+        j++;
+      }
       break;
     case Four_of_a_kind:
       while (j < numPlayers - 1){
