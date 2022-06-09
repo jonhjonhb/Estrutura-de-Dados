@@ -69,6 +69,7 @@ class Jogador{
     //getters
     clasificacao getClassificacao();
     std::string getName(){return name;};
+    int getValorPar();
     int getAmount(){return amount;};
     void getValores();
   private:  

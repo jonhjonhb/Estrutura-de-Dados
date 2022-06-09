@@ -92,6 +92,14 @@ int Jogador::numCartas(int numero){
   return contador;
 }
 
+int Jogador::getValorPar(){
+  int i = 0, contador = 0;
+  for (i = 1; i < 14; i++){
+    if(numCartas(i) == 2)
+      return i; 
+  }
+}
+
 void Jogador::aumentaCartaAs(){
   int i = 0;
   for(i = 0; i < NUM_CARTAS; i++){
@@ -265,8 +273,10 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
   switch(rank){
     case High_Card:
       while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
         for (k = j+1; k < numPlayers; k++){
-          if(posJogador[j] == -1 || posJogador[k] == -1)
+          if(posJogador[k] == -1)
             continue;
           for (i = 0; i < NUM_CARTAS; i++){
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
@@ -284,6 +294,33 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       }
       break;
     case One_Pair:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1)
+          continue;
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            continue;
+          if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
+            posJogador[k] = -1;
+            continue;
+          }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
+            posJogador[j] = -1;
+            continue;
+          }
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+              break;
+            }else {
+              posJogador[j] = -1;
+              break;
+            }
+          }
+        }
+        j++;
+      }
       break;
     case Two_Pairs:
       break;
