@@ -188,14 +188,13 @@ clasificacao Jogador::getClassificacao(){
 			return Royal_Straight_Flush;
 		}else if(sequencia){return Straight_Flush;}// Straight Flush [SF]
      else {return Flush;} // Flush [F]
-	}else { if(sequencia){return Straight;} } // Straight [S]
-  
+	}else if(sequencia){return Straight;} // Straight [S]
   if(quatroCartas){return Four_of_a_kind;} // Four of a kind [FK]
   if(tresCartas && duasCartas){return Full_House;} // Full House [FH]
   if(tresCartas && !duasCartas){return Three_of_a_kind;} // Three of a kind [TK]
   if(equalTwo(numParesCartas)){return Two_Pairs;} // Two Pairs [TP]
   if(equalOne(numParesCartas)){return One_Pair;} // One Pair [OP]
-  return Invalid;
+  return High_Card;
 }
 
 void Poker::getInfoJogadores(){
