@@ -101,7 +101,7 @@ int Jogador::numCartas(int numero){
 
 int Jogador::getValorPar(int ordem){
   int i = 0, contador = 0;
-  for (i = 14; i > 0; i--){      
+  for (i = 14; i > 1; i--){      
       if(numCartas(i) == 2)
         contador++;
       if(contador == ordem) 
@@ -112,7 +112,7 @@ int Jogador::getValorPar(int ordem){
 
 int Jogador::getValorTripla(){
   int i = 0;
-  for (i = 1; i < 15; i--){
+  for (i = 14; i > 1; i--){
       if(numCartas(i) == 3)
         return i;
   }
@@ -121,7 +121,7 @@ int Jogador::getValorTripla(){
 
 int Jogador::getValorQuadra(){
   int i = 0;
-  for (i = 1; i < 15; i--){      
+  for (i = 14; i > 1; i--){
       if(numCartas(i) == 4)
         return i;
   }
