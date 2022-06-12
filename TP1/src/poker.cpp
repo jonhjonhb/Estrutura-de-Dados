@@ -50,6 +50,13 @@ void Jogador::getValores(){
   return;
 }
 
+bool Jogador::isEqualNaipe(){
+  return (mao[0].getNaipe() == mao[1].getNaipe()) &&
+  			 (mao[2].getNaipe() == mao[3].getNaipe()) && 
+	       (mao[0].getNaipe() == mao[4].getNaipe()) && 
+				 (mao[2].getNaipe() == mao[1].getNaipe());
+}
+
 void Jogador::setMao(std::string strCarta[]){
   int i = 0;
   for (i = 0; i < NUM_CARTAS; i++){
@@ -166,12 +173,9 @@ clasificacao Jogador::getClassificacao(){
 	bool quatroCartas = false, tresCartas = false;
 	bool duasCartas = false;
   int numParesCartas = 0;
-	naipesIguais = (mao[0].getNaipe() == mao[1].getNaipe()) &&
-	 							 (mao[2].getNaipe() == mao[3].getNaipe()) && 
-								 (mao[0].getNaipe() == mao[4].getNaipe()) && 
-								 (mao[2].getNaipe() == mao[1].getNaipe());
+	naipesIguais = isEqualNaipe();
 	for (int i = 0; i < 14; i++){
-    if(!sequencia){
+    if(!sequencia && (!quatroCartas || !tresCartas || !duasCartas) ){
       sequencia = contemCarta(i%13+1) && contemCarta((i+1)%13+1) && contemCarta((i+2)%13+1) && contemCarta((i+3)%13+1) && contemCarta((i+4)%13+1);
     }
     if(equalFour(numCartas(i))){quatroCartas = true;}
@@ -183,8 +187,8 @@ clasificacao Jogador::getClassificacao(){
   }
 
   if(naipesIguais){
-		if(this->contemCarta(10) && this->contemCarta(11) && this->contemCarta(12) && this->contemCarta(13) && 
-       this->contemCarta(1)){ // Royal Straight Flush [RSF]
+		if(contemCarta(10) && contemCarta(11) && contemCarta(12) && contemCarta(13) && 
+       contemCarta(1)){ // Royal Straight Flush [RSF]
 			return Royal_Straight_Flush;
 		}else if(sequencia){return Straight_Flush;}// Straight Flush [SF]
      else {return Flush;} // Flush [F]
@@ -222,6 +226,9 @@ int Poker::getPingo(){
 
 void leCartas(std::string &line, std::string carta[]){
   int j = 1;
+  while (line.substr(line.size() - j, 1) == " "){
+    line = line.substr(0, line.size() - j);
+  } 
   for (int i = 0; i < NUM_CARTAS; i++){
     carta[i] = "";
     for (j = 1; line.substr(line.size() - j, 1) != " " ; j++){}
@@ -509,10 +516,17 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
   }
 }
 
+void inicializaVetor(int vetor[], int n){
+  for (int i = 0; i < MAX_JOGADOR; i++){
+    vetor[i] = n;
+  }
+}
+
 void Poker::getVencedor(std::ofstream &arqSaida){
   clasificacao ranking[numPlayers];
-  int i = 0, numVencedores = 1;
-  int posJogadorMaior[] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+  int i = 0, numVencedores = 0;
+  int posJogadorMaior[MAX_JOGADOR] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+  inicializaVetor(posJogadorMaior, -1);
   for (i = 0; i < numPlayers; i++){
     if (jogadores[i].mao[0].isEmpty()){
       ranking[i] = Invalid;
@@ -520,12 +534,17 @@ void Poker::getVencedor(std::ofstream &arqSaida){
     }
     ranking[i] = jogadores[i].getClassificacao();
   }
+  clasificacao aux = Invalid;
   for (i = 0; i < numPlayers; i++){
-    posJogadorMaior[0] = ranking[i] > posJogadorMaior[0] ? i : posJogadorMaior[0];
-  }
-  for (i = 0; i < numPlayers; i++){
-    if(posJogadorMaior[0] == i){continue;}
-    if(ranking[i] == ranking[posJogadorMaior[0]]){
+    if(ranking[i] > aux){
+      if (numVencedores > 0){
+        inicializaVetor(posJogadorMaior, -1);
+        numVencedores = 0;
+      }
+      aux = ranking[i];
+      posJogadorMaior[numVencedores] = i;
+      numVencedores++;
+    }else if(ranking[i] == aux){
       posJogadorMaior[numVencedores] = i;
       numVencedores++;
     }
@@ -535,9 +554,8 @@ void Poker::getVencedor(std::ofstream &arqSaida){
   if(numVencedores > 1){
     desempate(ranking[posJogadorMaior[0]], posJogadorMaior);
   }
-  for (i = 0; i < 10 && i < numPlayers; i++){
-    if(posJogadorMaior[i] == -1)
-      continue;
+  for (i = 0; i < MAX_JOGADOR && i < numPlayers; i++){
+    if(posJogadorMaior[i] == -1){ break; }
     arqSaida << jogadores[posJogadorMaior[i]].getName() << "\n";
     jogadores[posJogadorMaior[i]].amount += getPote()/numVencedores;
   }
@@ -607,5 +625,4 @@ void Poker::iniciaJogo(){
   }
   file.close();
   arqSaida.close();
-  getInfoJogadores();
 }

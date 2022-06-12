@@ -20,7 +20,7 @@ enum clasificacao {
   Two_Pairs = 3, 
   One_Pair = 2, 
   High_Card = 1, 
-  Invalid = 0 
+  Invalid = 0
 };
 
 class Carta{
@@ -53,6 +53,7 @@ class Jogador{
     Jogador(std::string str, int din, std::string carta[]): name(str), amount(din){setMao(carta);};
     //funcoes
     bool isEmpty(){return (name == "" && amount == 0);};
+    bool isEqualNaipe();
     void limpaMao();
     bool contemCarta(int valor);
     int numCartas(int numero);
