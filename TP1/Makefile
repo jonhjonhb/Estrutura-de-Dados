@@ -41,3 +41,6 @@ clean:
 
 jogar: $(EXE) 
 	$(EXE)
+
+gdb: $(EXE) 
+	gdb $(EXE)
