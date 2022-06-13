@@ -59,14 +59,14 @@ bool Jogador::isEqualNaipe(){
 
 void Jogador::setMao(std::string strCarta[]){
   int i = 0;
-  for (i = 0; i < NUM_CARTAS; i++){
+  for(i = 0; i < NUM_CARTAS; i++){
     mao[i] = Carta(strCarta[i]);
   }
 }
 
 void Jogador::limpaMao(){
   int i = 0;
-  for (i = 0; i < NUM_CARTAS; i++){
+  for(i = 0; i < NUM_CARTAS; i++){
     mao[i].apaga();
   }
 }
@@ -84,7 +84,7 @@ void Jogador::debitaDinheiro(int dinheiro){
 
 bool Jogador::contemCarta(int numero){
   int i = 0;
-  for (i = 0; i < NUM_CARTAS; i++){
+  for(i = 0; i < NUM_CARTAS; i++){
     if (mao[i].valor == numero)
       return true;
   }
@@ -93,7 +93,7 @@ bool Jogador::contemCarta(int numero){
 
 int Jogador::numCartas(int numero){
   int i = 0, contador = 0;
-  for (i = 0; i < NUM_CARTAS; i++){
+  for(i = 0; i < NUM_CARTAS; i++){
     if (mao[i].valor == numero){contador++;}
   }
   return contador;
@@ -299,21 +299,19 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
   switch(rank){
     case High_Card:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
-          for (i = 0; i < NUM_CARTAS; i++){
-            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
-              continue;
-            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
-              posJogador[k] = -1;
-              break;
-            }else {
-              posJogador[j] = -1;
-              break;
-            }
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+          }else {
+            posJogador[j] = -1;
           }
         }
         j++;
@@ -321,28 +319,24 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case One_Pair:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
           if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
             posJogador[j] = -1;
-            continue;
           }
-          for (i = 0; i < NUM_CARTAS; i++){
-            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
-              continue;
-            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
-              posJogador[k] = -1;
-              break;
-            }else {
-              posJogador[j] = -1;
-              break;
-            }
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+          }else {
+            posJogador[j] = -1;
           }
         }
         j++;
@@ -350,35 +344,29 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Two_Pairs:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
           if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
             posJogador[j] = -1;
-            continue;
           }
           if(jogadores[posJogador[j]].getValorPar(2) > jogadores[posJogador[k]].getValorPar(2)){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorPar(2) < jogadores[posJogador[k]].getValorPar(2)){
             posJogador[j] = -1;
-            continue;
           }
-          for (i = 0; i < NUM_CARTAS; i++){
-            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
-              continue;
-            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
-              posJogador[k] = -1;
-              break;
-            }else {
-              posJogador[j] = -1;
-              break;
-            }
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+          }else {
+            posJogador[j] = -1;
           }
         }
         j++;
@@ -386,28 +374,24 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Three_of_a_kind:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
           if(jogadores[posJogador[j]].getValorTripla() > jogadores[posJogador[k]].getValorTripla()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorTripla() < jogadores[posJogador[k]].getValorTripla()){
             posJogador[j] = -1;
-            continue;
           }
-          for (i = 0; i < NUM_CARTAS; i++){
-            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
-              continue;
-            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
-              posJogador[k] = -1;
-              break;
-            }else {
-              posJogador[j] = -1;
-              break;
-            }
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+          }else {
+            posJogador[j] = -1;
           }
         }
         j++;
@@ -415,8 +399,10 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Straight:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
@@ -424,10 +410,8 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             continue;
           if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
             posJogador[k] = -1;
-            break;
           }else {
             posJogador[j] = -1;
-            break;
           }
         }
         j++;
@@ -435,8 +419,10 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Flush:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
@@ -444,10 +430,8 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             continue;
           if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
             posJogador[k] = -1;
-            break;
           }else {
             posJogador[j] = -1;
-            break;
           }
         }
         j++;
@@ -455,24 +439,22 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Full_House:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
           if(jogadores[posJogador[j]].getValorTripla() > jogadores[posJogador[k]].getValorTripla()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorTripla() < jogadores[posJogador[k]].getValorTripla()){
             posJogador[j] = -1;
-            continue;
           }
           if(jogadores[posJogador[j]].getValorPar() > jogadores[posJogador[k]].getValorPar()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorPar() < jogadores[posJogador[k]].getValorPar()){
             posJogador[j] = -1;
-            continue;
           }
         }
         j++;
@@ -480,28 +462,24 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
     case Four_of_a_kind:
       while (j < numPlayers - 1){
-        if(posJogador[j] == -1)
-          break;
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
           if(jogadores[posJogador[j]].getValorQuadra() > jogadores[posJogador[k]].getValorQuadra()){
             posJogador[k] = -1;
-            continue;
           }else if(jogadores[posJogador[j]].getValorQuadra() < jogadores[posJogador[k]].getValorQuadra()){
             posJogador[j] = -1;
-            continue;
           }
-          for (i = 0; i < NUM_CARTAS; i++){
-            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
-              continue;
-            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
-              posJogador[k] = -1;
-              break;
-            }else {
-              posJogador[j] = -1;
-              break;
-            }
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            posJogador[k] = -1;
+          }else {
+            posJogador[j] = -1;
           }
         }
         j++;
@@ -610,10 +588,11 @@ void Poker::ordenarJogadores(){
 
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
-  int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;  
+  int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;
   int apost[MAX_JOGADOR];
   std::ifstream file ("entrada.txt");
   std::ofstream arqSaida("saida.txt");
+  std::string strRodadaInvalida = "0 0 I";
   std::string nome = "";
   std::string line = "";
   std::string carta[NUM_CARTAS];
