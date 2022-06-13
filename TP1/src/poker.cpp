@@ -292,10 +292,9 @@ std::string converterClassificao(clasificacao rank){
 }
 
 void Poker::desempate(clasificacao rank, int posJogador[]){
-  int i = 0, j = 0, k = 0, numVencedores = 0;
+  int i = 0, j = 0, k = 0;
   for (i = 0; i < numPlayers; i++){
     jogadores[i].aumentaCartaAs();
-    numVencedores = posJogador[i] != -1 ? numVencedores + 1: numVencedores;
   }
   switch(rank){
     case High_Card:
@@ -522,6 +521,37 @@ void inicializaVetor(int vetor[], int n){
   }
 }
 
+int numeroDeVencedores(int vetor[]){
+  int sum = 0;
+  for (int i = 0; i < MAX_JOGADOR; i++){
+    if(vetor[i] != -1)
+      sum++;
+  }
+  return sum;
+}
+
+void Poker::ordenarNome(int posJogadores[]){
+  int i = 0, j = 0, aux = 0;
+  for(i = 0; i < numPlayers - 1; i++){
+    if (posJogadores[i] == -1){
+      posJogadores[i] = posJogadores[i + 1];
+      posJogadores[i + 1] = -1;
+    }
+  }
+  for(i = 0; i < numPlayers; i++){
+    for (j = i+1; j < numPlayers; j++){
+      if (posJogadores[i] == -1 || posJogadores[j] == -1){
+        break;
+      }
+      if(jogadores[posJogadores[i]].getName() > jogadores[posJogadores[j]].getName()){
+        aux = posJogadores[i];
+        posJogadores[i] = posJogadores[j];
+        posJogadores[j] = aux;
+      }
+    }
+  }
+}
+
 void Poker::getVencedor(std::ofstream &arqSaida){
   clasificacao ranking[numPlayers];
   int i = 0, numVencedores = 0;
@@ -549,13 +579,15 @@ void Poker::getVencedor(std::ofstream &arqSaida){
       numVencedores++;
     }
   }
-  arqSaida << numVencedores << " " << getPote()/numVencedores << " ";
-  arqSaida << converterClassificao(ranking[posJogadorMaior[0]]) << "\n";
   if(numVencedores > 1){
     desempate(ranking[posJogadorMaior[0]], posJogadorMaior);
+    ordenarNome(posJogadorMaior);
+    numVencedores = numeroDeVencedores(posJogadorMaior);
   }
-  for (i = 0; i < MAX_JOGADOR && i < numPlayers; i++){
-    if(posJogadorMaior[i] == -1){ break; }
+  arqSaida << numVencedores << " " << getPote()/numVencedores << " ";
+  arqSaida << converterClassificao(ranking[posJogadorMaior[0]]) << "\n";
+  for (i = 0; i < numPlayers; i++){
+    if(posJogadorMaior[i] == -1){ continue; }
     arqSaida << jogadores[posJogadorMaior[i]].getName() << "\n";
     jogadores[posJogadorMaior[i]].amount += getPote()/numVencedores;
   }
