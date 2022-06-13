@@ -83,7 +83,7 @@ void Jogador::debitaPingo(int dinheiro){
 
 void Jogador::debitaDinheiro(int dinheiro){
   if(mao[0].isEmpty() || rodadaInvalida){return;}
-  if(amount < dinheiro){
+  if(amount < dinheiro || dinheiro % MIN_PINGO != 0){
     rodadaInvalida = true;
     return;
   }
@@ -217,7 +217,7 @@ void Poker::getInfoJogadores(){
 }
 
 void Poker::setPingo(int valorPingoMin){
-  if (valorPingoMin % MIN_PINGO == 0){
+  if (valorPingoMin >= MIN_PINGO){
     pingoMinimo = valorPingoMin;
   } else {
     rodadaInvalida = true;
@@ -315,12 +315,14 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
-          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
-            continue;
-          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
-            posJogador[k] = -1;
-          }else {
-            posJogador[j] = -1;
+          for (i = 0; i < NUM_CARTAS; i++){
+            if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
+              continue;
+            if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
+              posJogador[k] = -1;
+            }else {
+              posJogador[j] = -1;
+            }
           }
         }
         j++;
@@ -598,7 +600,6 @@ void Poker::ordenarJogadores(){
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
   int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;
-  int apost[MAX_JOGADOR];
   std::ifstream file ("entrada.txt");
   std::ofstream arqSaida("saida.txt");
   std::string strRodadaInvalida = "0 0 I";
@@ -645,9 +646,10 @@ void Poker::iniciaJogo(){
   }
   arqSaida << "####\n";
   ordenarJogadores();
-  for (j = 0; j < numPlayers; j++){
+  for (j = 0; j < numPlayers - 1; j++){
     arqSaida << jogadores[j].getName() << " " << jogadores[j].getAmount() << "\n";
   }
+  arqSaida << jogadores[numPlayers - 1].getName() << " " << jogadores[numPlayers - 1].getAmount();
   file.close();
   arqSaida.close();
 }

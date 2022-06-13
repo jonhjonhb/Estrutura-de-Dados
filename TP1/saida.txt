@@ -1,7 +1,5 @@
-3 366 HC
-Eduarda
+1 1100 HC
 Gabriel
-Pedro
 1 1700 OP
 Renan
 1 2200 TP
@@ -23,11 +21,11 @@ Pedro
 1 700 RSF
 Ellen
 ####
-Pedro 3366
-Eduarda 2866
+Pedro 3000
+Eduarda 2500
 Yurih 2450
 Renan 2100
 Ellen 2000
-Gabriel 566
+Gabriel 1300
 Lucas 550
 Victor 0
