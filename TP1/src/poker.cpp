@@ -72,12 +72,21 @@ void Jogador::limpaMao(){
 }
 
 void Jogador::debitaPingo(int dinheiro){
+  if(rodadaInvalida){return;}
+  if(amount < dinheiro){
+    rodadaInvalida = true;
+    return;
+  }
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
 
 void Jogador::debitaDinheiro(int dinheiro){
-  if(mao[1].isEmpty()){return;}
+  if(mao[0].isEmpty() || rodadaInvalida){return;}
+  if(amount < dinheiro){
+    rodadaInvalida = true;
+    return;
+  }
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
@@ -598,6 +607,7 @@ void Poker::iniciaJogo(){
   std::string carta[NUM_CARTAS];
   file >> rodadas >> dinInicial;
   for (i = 0; i < rodadas; i++){
+    rodadaInvalida = false;
     file >> numJogadores >> pingo;
     setPingo(pingo);
     if(i==0){
@@ -625,7 +635,11 @@ void Poker::iniciaJogo(){
       }  
     }
     somaPote(getPingo());
-    getVencedor(arqSaida);
+    if (rodadaInvalida){
+      arqSaida << "0 0 I\n";
+    }else{
+      getVencedor(arqSaida);
+    }
     limparCartas();
     zerarPote();
   }

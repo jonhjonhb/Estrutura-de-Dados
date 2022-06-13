@@ -19,16 +19,15 @@ Ellen
 Pedro
 1 1300 SF
 Pedro
-1 2700 RSF
-Eduarda
+0 0 I
 1 700 RSF
 Ellen
 ####
-Eduarda 5566
-Pedro 3066
+Pedro 3366
+Eduarda 2866
 Yurih 2450
 Renan 2100
 Ellen 2000
 Gabriel 566
 Lucas 550
-Victor -300
+Victor 0
