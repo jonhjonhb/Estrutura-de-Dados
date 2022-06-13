@@ -1,5 +1,5 @@
 1 1100 HC
-Gabriel
+Eduarda
 1 1700 OP
 Renan
 1 2200 TP
@@ -18,14 +18,13 @@ Pedro
 1 1300 SF
 Pedro
 0 0 I
-1 700 RSF
-Ellen
+0 0 I
 ####
-Pedro 3000
-Eduarda 2500
+Eduarda 3600
+Pedro 3050
 Yurih 2450
 Renan 2100
-Ellen 2000
-Gabriel 1300
+Ellen 1300
 Lucas 550
-Victor 0
+Gabriel 200
+Victor 50

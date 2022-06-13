@@ -92,6 +92,7 @@ class Poker{
     void ordenarJogadores();
     void ordenarNome(int posJogadores[]);
     void incluiJogador(Jogador *newPlayer);
+    int pesquisarJogador(std::string nomeJogador);
     void leLinha(std::string str);
     void somaPote(int pingo){pote += pingo;};
     void novaRodada(std::string nome, std::string carta[], int aposta);
