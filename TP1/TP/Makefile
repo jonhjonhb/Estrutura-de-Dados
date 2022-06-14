@@ -37,10 +37,14 @@ $(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/poker.o $(SRC)/poker.cpp 
 	
 clean:
-	rm -f $(EXE) $(OBJS) *.out
+	rm -f $(EXE) $(BIN)/gerador $(OBJS) *.out
 
 jogar: $(EXE) 
 	$(EXE)
 
 gdb: $(EXE) 
 	gdb $(EXE)
+
+gerador: $(EXE) 
+	gcc src/geracarga.c -I$(INC) -o bin/gerador -lm
+	bin/gerador -o "entrada.txt" -r 50000 -j 8 -v 1
