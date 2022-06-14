@@ -20,13 +20,15 @@ OBJ = obj
 INC = include
 BIN = bin
 FER = -g
-OBJS = $(OBJ)/poker.o $(OBJ)/jogo.o 
+OBJS = $(OBJ)/poker.o $(OBJ)/jogo.o
 HDRS = $(INC)/poker.hpp
-CFLAGS = $(FER) -Wall -c -I$(INC) # -O3
+OBJSM = $(OBJ)/analisamem.o
+HDRSM = $(INC)/msgassert.h
+CFLAGS = $(FER) -Wall -c -I$(INC)
 
 EXE = $(BIN)/jogo
 
-# all: bin
+all: bin
 $(BIN)/jogo: $(OBJS)
 	$(CC) $(FER) -o $(EXE) $(OBJS) $(LIBS)
 
@@ -37,7 +39,7 @@ $(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/poker.o $(SRC)/poker.cpp 
 	
 clean:
-	rm -f $(EXE) $(BIN)/gerador $(OBJS) *.out
+	rm -f $(EXE) $(BIN)/gerador $(OBJS) $(OBJSM) *.out
 
 jogar: $(EXE) 
 	$(EXE)
@@ -48,3 +50,11 @@ gdb: $(EXE)
 gerador: $(EXE) 
 	gcc src/geracarga.c -I$(INC) -o bin/gerador -lm
 	bin/gerador -o "entrada.txt" -r 50000 -j 8 -v 1
+
+bin: $(BIN)/analisamem
+
+$(BIN)/analisamem: $(OBJSM)
+	$(CC) -pg -o $(BIN)/analisamem $(OBJSM) $(LIBS)
+
+$(OBJ)/analisamem.o: $(HDRSM) $(SRC)/analisamem.c
+	$(CC) $(CFLAGS) -o $(OBJ)/analisamem.o $(SRC)/analisamem.c 
