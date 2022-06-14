@@ -91,11 +91,13 @@ class Poker{
     void zerarPote(){pote = 0;};
     void ordenarJogadores();
     void ordenarNome(int posJogadores[]);
+    void confereDebito(int aposta[]);
+    void fazerApostas(int aposta[]);
     void incluiJogador(Jogador *newPlayer);
     int pesquisarJogador(std::string nomeJogador);
     void leLinha(std::string str);
     void somaPote(int pingo){pote += pingo;};
-    void novaRodada(std::string nome, std::string carta[], int aposta);
+    void novaRodada(std::string nome, std::string carta[]);
     void desempate(clasificacao rank, int posJogador[]);
     void setNumJogadores(int num);
     void setPingo(int valorPingoMin);

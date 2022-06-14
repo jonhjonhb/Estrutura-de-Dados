@@ -73,20 +73,12 @@ void Jogador::limpaMao(){
 
 void Jogador::debitaPingo(int dinheiro){
   if(rodadaInvalida){return;}
-  if(amount <= dinheiro){
-    rodadaInvalida = true;
-    return;
-  }
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
 
 void Jogador::debitaDinheiro(int dinheiro){
-  if(mao[0].isEmpty() || rodadaInvalida){return;}
-  if(amount <= dinheiro || dinheiro % MIN_PINGO != 0){
-    rodadaInvalida = true;
-    return;
-  }
+  if(mao[0].isEmpty() || rodadaInvalida || dinheiro == 0){return;}
   // erroAssert(this->amount < dinheiro,"O jogador não possui dinheiro suficiente!");
   amount -= dinheiro;
 }
@@ -217,7 +209,7 @@ void Poker::getInfoJogadores(){
 }
 
 void Poker::setPingo(int valorPingoMin){
-  if (valorPingoMin >= MIN_PINGO){
+  if (valorPingoMin >= MIN_PINGO && valorPingoMin % MIN_PINGO == 0){
     pingoMinimo = valorPingoMin;
   } else {
     rodadaInvalida = true;
@@ -262,12 +254,11 @@ void Poker::limparCartas(){
   }
 }
 
-void Poker::novaRodada(std::string nome, std::string carta[],int aposta){
+void Poker::novaRodada(std::string nome, std::string carta[]){
   for (int i = 0; i < numPlayers; i++){
     if (jogadores[i].getName() == nome){
       jogadores[i].setMao(carta);
       jogadores[i].ordenarCartas();
-      jogadores[i].debitaDinheiro(aposta);
       return;
     }
   }
@@ -438,6 +429,34 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
             }else {
+              posJogador[j] = -1;
+            }
+          }
+        }
+        j++;
+      }
+      break;
+    case Straight_Flush:
+      while (j < numPlayers - 1){
+        if(posJogador[j] == -1){
+          j++;
+          continue;
+        }
+        for (k = j+1; k < numPlayers; k++){
+          if(posJogador[k] == -1)
+            break;
+          if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
+            continue;
+          if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
+            if(jogadores[posJogador[j]].mao[0].getValor() == 14){
+              posJogador[j] = -1;
+            }else{
+              posJogador[k] = -1;
+            }
+          }else {
+            if(jogadores[posJogador[k]].mao[0].getValor() == 14){
+              posJogador[k] = -1;
+            }else{
               posJogador[j] = -1;
             }
           }
@@ -618,10 +637,26 @@ void Poker::ordenarJogadores(){
   }
 }
 
+void Poker::confereDebito(int aposta[]){
+  int dinheiroApostado = 0;
+  for (int i = 0; i < numPlayers; i++){
+    dinheiroApostado = aposta[i] + pingoMinimo;
+      if(jogadores[i].getAmount() <= dinheiroApostado || (dinheiroApostado) % MIN_PINGO != 0)
+        rodadaInvalida = true;
+  }
+}
+
+void Poker::fazerApostas(int aposta[]){
+  for (int i = 0; i < numPlayers; i++){
+    jogadores[i].debitaDinheiro(aposta[i]);
+    somaPote(aposta[i]);
+  }
+}
+
 void Poker::iniciaJogo(){
   int dinInicial = 0, rodadas = 0, i = 0;
   int numJogadores = 0, pingo = 0, aposta = 0,  j = 0;
-  int apostaJogadores[MAX_JOGADOR] = {0,0,0,0,0,0,0,0,0,0};
+  int apostaJogadores[MAX_JOGADOR];
   std::ifstream file ("entrada.txt");
   std::ofstream arqSaida("saida.txt");
   std::string strRodadaInvalida = "0 0 I";
@@ -630,6 +665,7 @@ void Poker::iniciaJogo(){
   std::string carta[NUM_CARTAS];
   file >> rodadas >> dinInicial;
   for (i = 0; i < rodadas; i++){
+    inicializaVetor(apostaJogadores, 0);
     rodadaInvalida = false;
     file >> numJogadores >> pingo;
     setPingo(pingo);
@@ -644,8 +680,6 @@ void Poker::iniciaJogo(){
         incluiJogador(new Jogador(nome, dinInicial, carta));
         apostaJogadores[j] = aposta;
         jogadores[j].ordenarCartas();
-        jogadores[j].debitaDinheiro(aposta);
-        somaPote(aposta);
       }
     }else{
       for (j = 0; j < numJogadores; j++){
@@ -655,14 +689,15 @@ void Poker::iniciaJogo(){
         leAposta(line, aposta);
         nome = line;
         apostaJogadores[pesquisarJogador(nome)] = aposta;
-        novaRodada(nome,carta,aposta);
-        somaPote(aposta);
+        novaRodada(nome,carta);
       }
     }
-    somaPote(getPingo());
+    confereDebito(apostaJogadores);
     if (rodadaInvalida){
       arqSaida << "0 0 I\n";
     }else{
+      somaPote(getPingo());
+      fazerApostas(apostaJogadores);
       getVencedor(arqSaida);
     }
     limparCartas();

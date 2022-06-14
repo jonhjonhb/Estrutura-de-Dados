@@ -1,30 +1,24 @@
-1 1100 HC
-Eduarda
-1 1700 OP
-Renan
-1 2200 TP
-Yurih
-1 1150 TK
-Eduarda
-2 800 S
-Renan
-Yurih
+1 1000 S
+Gisele
+1 900 OP
+Thiago
+1 1350 SF
+Wagner
+1 700 RSF
+Gisele
+2 425 RSF
+Gisele
+Wagner
 1 1300 F
-Eduarda
-1 1100 FH
-Ellen
-1 900 FK
-Pedro
-1 1300 SF
-Pedro
+Wagner
 0 0 I
+0 0 I
+1 650 FH
+Wagner
 0 0 I
 ####
-Eduarda 3600
-Pedro 3050
-Yurih 2450
-Renan 2100
-Ellen 1300
-Lucas 550
-Gabriel 200
-Victor 50
+Wagner 2925
+Gisele 1475
+Giovanni 400
+John 100
+Thiago 100
