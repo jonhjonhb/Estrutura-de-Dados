@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "memlog.h"
+#include <time.h>
+#include "memlog.hpp"
 #include "msgassert.h"
 
 // variavel estatica de registro de acessos

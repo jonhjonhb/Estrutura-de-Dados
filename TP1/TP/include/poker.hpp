@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <cstdio>
 #include <fstream>
+#include "memlog.hpp"
+#include "msgassert.h"
 
 #define NUM_CARTAS 5
 
@@ -63,21 +65,38 @@ class Jogador{
     void aumentaCartaAs();
     void diminuirCartaAs();
     //setters
-    void setAtributtes(std::string a, double b){setName(a), setAmount(b);};
-    void setName(std::string a){name = a;};
-    void setAmount(int b){amount = b;};
+    void setAtributtes(std::string a, double b){
+      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
+      setName(a);
+      setAmount(b);
+    };
+    void setName(std::string a){
+      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
+      name = a;
+    };
+    void setAmount(int b){
+      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
+      amount = b;
+    };
     void setMao(std::string strCarta[]);
     //getters
     clasificacao getClassificacao();
-    std::string getName(){return name;};
+    std::string getName(){
+      LEMEMLOG((long int)(this),sizeof(double),id);
+      return name;
+    };
     int getValorPar(int ordem = 1);
     int getValorTripla();
     int getValorQuadra();
-    int getAmount(){return amount;};
+    int getAmount(){
+      LEMEMLOG((long int)(this),sizeof(double),id);
+      return amount;
+    };
     void getValores();
   private:  
     std::string name;
     int amount;
+    int id;
     Carta mao[NUM_CARTAS];
     friend class Poker;
 };
