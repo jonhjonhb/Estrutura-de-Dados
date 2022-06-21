@@ -106,6 +106,7 @@ class Jogador{
 class Poker{
   public:
     Poker(): jogadores(NULL), pote(0), pingoMinimo(0), numPlayers(0) {}
+    ~Poker(){free(jogadores);};
     void alocarJogadores();
     void iniciaJogo();
     void limparCartas();

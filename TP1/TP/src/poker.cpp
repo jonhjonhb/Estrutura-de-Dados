@@ -24,21 +24,22 @@ void Jogador::getValores(){
   for(int i = 0; i < NUM_CARTAS; i++){
     std::cout << " ";
     mao[i].imprimeCarta();
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    LEMEMLOG((long int)(&mao[i].naipe),sizeof(std::string),id);
   }
   std::cout << std::endl;
   return;
 }
 
 bool Jogador::isEqualNaipe(){
-  LEMEMLOG((long int)(&mao[0]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[1]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[1]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[2]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[2]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[3]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[3]),sizeof(Carta),id);
-  LEMEMLOG((long int)(&mao[4]),sizeof(Carta),id);
+  LEMEMLOG((long int)(&mao[0].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[1].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[1].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[2].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[2].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[3].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[3].naipe),sizeof(std::string),id);
+  LEMEMLOG((long int)(&mao[4].naipe),sizeof(std::string),id);
   return (mao[0].getNaipe() == mao[1].getNaipe()) &&
   			 (mao[1].getNaipe() == mao[2].getNaipe()) && 
   			 (mao[2].getNaipe() == mao[3].getNaipe()) &&  
@@ -47,14 +48,16 @@ bool Jogador::isEqualNaipe(){
 
 void Jogador::setMao(std::string strCarta[]){
   for(int i = 0; i < NUM_CARTAS; i++){
-    ESCREVEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
     mao[i] = Carta(strCarta[i]);
+    ESCREVEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    ESCREVEMEMLOG((long int)(&mao[i].naipe),sizeof(std::string),id);
   }
 }
 
 void Jogador::limpaMao(){
   for(int i = 0; i < NUM_CARTAS; i++){
-    ESCREVEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+    ESCREVEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    ESCREVEMEMLOG((long int)(&mao[i].naipe),sizeof(std::string),id);
     mao[i].apaga();
   }
 }
@@ -66,7 +69,8 @@ void Jogador::debitaPingo(int dinheiro){
 }
 
 void Jogador::debitaDinheiro(int dinheiro){
-  LEMEMLOG((long int)(&mao[0]),sizeof(Carta),id);
+  ESCREVEMEMLOG((long int)(&mao[0].valor),sizeof(int),id);
+  ESCREVEMEMLOG((long int)(&mao[0].naipe),sizeof(std::string),id);
   if(mao[0].isEmpty() || rodadaInvalida || dinheiro == 0){return;}
   ESCREVEMEMLOG((long int)(&amount),sizeof(int),id);
   amount -= dinheiro;
@@ -74,7 +78,7 @@ void Jogador::debitaDinheiro(int dinheiro){
 
 bool Jogador::contemCarta(int numero){
   for(int i = 0; i < NUM_CARTAS; i++){
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
     if(mao[i].getValor() == numero){
       return true;
     }
@@ -85,8 +89,8 @@ bool Jogador::contemCarta(int numero){
 int Jogador::numCartas(int numero){
   int i = 0, contador = 0;
   for(i = 0; i < NUM_CARTAS; i++){
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
-    if (mao[i].valor == numero){
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    if (mao[i].getValor() == numero){
       contador++;
     }
   }
@@ -121,26 +125,28 @@ int Jogador::getValorQuadra(){
 }
 
 void Jogador::aumentaCartaAs(){
-  LEMEMLOG((long int)(&mao[0]),sizeof(Carta),id);
+  LEMEMLOG((long int)(&mao[0].valor),sizeof(int),id);
+  LEMEMLOG((long int)(&mao[0].naipe),sizeof(std::string),id);
   if(mao[0].isEmpty())
     return;
   for(int i = 0; i < NUM_CARTAS; i++){
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
     if (mao[i].getValor() == 1){
-      ESCREVEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+      ESCREVEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
       mao[i].setValor(14);
     }
   }
 }
 
 void Jogador::diminuirCartaAs(){
-  LEMEMLOG((long int)(&mao[0]),sizeof(Carta),id);
+  LEMEMLOG((long int)(&mao[0].valor),sizeof(int),id);
+  LEMEMLOG((long int)(&mao[0].naipe),sizeof(std::string),id);
   if(mao[0].isEmpty())
     return;
   for(int i = 0; i < NUM_CARTAS; i++){
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
     if (mao[i].getValor() == 14){
-      ESCREVEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
+      ESCREVEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);;
       mao[i].setValor(1);
     }
   }
@@ -153,15 +159,19 @@ void Jogador::ordenarCartas(){
   for(i = 0; i < NUM_CARTAS; i++){
     maior = i;
     for(j = i + 1; j < NUM_CARTAS; j++){
-      LEMEMLOG((long int)(&mao[j]),sizeof(Carta),id);
-      LEMEMLOG((long int)(&mao[maior]),sizeof(Carta),id);
+      LEMEMLOG((long int)(&mao[j].valor),sizeof(int),id);
+      LEMEMLOG((long int)(&mao[maior].valor),sizeof(int),id);
       if(mao[j].getValor() > mao[maior].getValor())
         maior = j;
     }
-    LEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
-    ESCREVEMEMLOG((long int)(&mao[i]),sizeof(Carta),id);
-    LEMEMLOG((long int)(&mao[maior]),sizeof(Carta),id);
-    ESCREVEMEMLOG((long int)(&mao[maior]),sizeof(Carta),id);
+    LEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    LEMEMLOG((long int)(&mao[i].naipe),sizeof(std::string),id);
+    ESCREVEMEMLOG((long int)(&mao[i].valor),sizeof(int),id);
+    ESCREVEMEMLOG((long int)(&mao[i].naipe),sizeof(std::string),id);
+    LEMEMLOG((long int)(&mao[maior].valor),sizeof(int),id);
+    LEMEMLOG((long int)(&mao[maior].naipe),sizeof(std::string),id);
+    ESCREVEMEMLOG((long int)(&mao[maior].valor),sizeof(int),id);
+    ESCREVEMEMLOG((long int)(&mao[maior].naipe),sizeof(std::string),id);
     aux = mao[i];
     mao[i] = mao[maior];
     mao[maior] = aux;
@@ -219,15 +229,13 @@ void Poker::setNumJogadores(int num){
 
 void Poker::incluiJogador(Jogador *newPlayer){
   int i = 0;
-  LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+  // LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
   while(!(jogadores[i].isEmpty()) && (i < numPlayers)){
     i++;
-    LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
   }
-  ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+  // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
   jogadores[i] = *newPlayer;
-  ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
-  jogadores[i].ordenarCartas();
 }
 
 void Poker::getInfoJogadores(){
@@ -247,7 +255,7 @@ void Poker::setPingo(int valorPingoMin){
 int Poker::getPingo(){
   int sum = 0;
   for (int i = 0; i < numPlayers; i++){
-    ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     jogadores[i].debitaPingo(pingoMinimo); 
     sum += pingoMinimo;
   }
@@ -279,18 +287,18 @@ void leAposta(std::string &line, int &aposta){
 
 void Poker::limparCartas(){
   for (int i = 0; i < numPlayers ; i++){
-    ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     jogadores[i].limpaMao();
   }
 }
 
 void Poker::novaRodada(std::string nome, std::string carta[]){
   for (int i = 0; i < numPlayers; i++){
-    LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     if (jogadores[i].getName() == nome){
-      ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+      // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
       jogadores[i].setMao(carta);
-      ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+      // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
       jogadores[i].ordenarCartas();
       return;
     }
@@ -299,7 +307,7 @@ void Poker::novaRodada(std::string nome, std::string carta[]){
 
 int Poker::pesquisarJogador(std::string nomeJogador){
   for (int i = 0; i < numPlayers; i++){
-    LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // LEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     if (jogadores[i].getName() == nomeJogador){
       return i;
     }
@@ -337,7 +345,7 @@ std::string converterClassificao(clasificacao rank){
 void Poker::desempate(clasificacao rank, int posJogador[]){
   int i = 0, j = 0, k = 0;
   for (i = 0; i < numPlayers; i++){
-    ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     jogadores[i].aumentaCartaAs();
   }
   switch(rank){
@@ -351,12 +359,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
           if(posJogador[k] == -1)
             break;
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -386,12 +394,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             break;
           }
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -428,12 +436,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             break;
           }
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -463,12 +471,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             break;
           }
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -491,12 +499,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
           if(posJogador[k] == -1)
             break;
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -518,14 +526,14 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
         for (k = j+1; k < numPlayers; k++){
           if(posJogador[k] == -1)
             break;
-          LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0])),sizeof(Carta),jogadores[posJogador[j]].id);
-          LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0])),sizeof(Carta),jogadores[posJogador[k]].id);
+          LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0].valor)),sizeof(int),jogadores[posJogador[j]].id);
+          LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0].valor)),sizeof(int),jogadores[posJogador[k]].id);
           if(jogadores[posJogador[j]].mao[0].getValor() == jogadores[posJogador[k]].mao[0].getValor())
             continue;
-          LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0])),sizeof(Carta),jogadores[posJogador[j]].id);
-          LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0])),sizeof(Carta),jogadores[posJogador[k]].id);
+          LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0].valor)),sizeof(int),jogadores[posJogador[j]].id);
+          LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0].valor)),sizeof(int),jogadores[posJogador[k]].id);
           if(jogadores[posJogador[j]].mao[0].getValor() > jogadores[posJogador[k]].mao[0].getValor()){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0])),sizeof(Carta),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[0].valor)),sizeof(int),jogadores[posJogador[j]].id);
             if(jogadores[posJogador[j]].mao[0].getValor() == 14){
               posJogador[j] = -1;
               break;
@@ -534,7 +542,7 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
               break;
             }
           }else {
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[0].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[k]].mao[0].getValor() == 14){
               posJogador[k] = -1;
               break;
@@ -557,12 +565,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
           if(posJogador[k] == -1)
             break;
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -619,12 +627,12 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
             break;
           }
           for (i = 0; i < NUM_CARTAS; i++){
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() == jogadores[posJogador[k]].mao[i].getValor())
               continue;
-            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i])),sizeof(Carta),jogadores[posJogador[j]].id);
-            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i])),sizeof(Carta),jogadores[posJogador[k]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[j]].mao[i].valor)),sizeof(int),jogadores[posJogador[j]].id);
+            LEMEMLOG((long int)(&(jogadores[posJogador[k]].mao[i].valor)),sizeof(int),jogadores[posJogador[k]].id);
             if(jogadores[posJogador[j]].mao[i].getValor() > jogadores[posJogador[k]].mao[i].getValor()){
               posJogador[k] = -1;
               break;
@@ -641,7 +649,7 @@ void Poker::desempate(clasificacao rank, int posJogador[]){
       break;
   }
   for (i = 0; i < numPlayers; i++){
-    ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
+    // ESCREVEMEMLOG((long int)(&(jogadores[i])),sizeof(Jogador),jogadores[i].id);
     jogadores[i].diminuirCartaAs();
   }
 }
@@ -697,7 +705,8 @@ void Poker::getVencedor(std::ofstream &arqSaida){
   int posJogadorMaior[MAX_JOGADOR];
   inicializaVetor(posJogadorMaior, -1);
   for (i = 0; i < numPlayers; i++){
-    LEMEMLOG((long int)(&(jogadores[i].mao[0])),sizeof(Carta),jogadores[i].id);
+    LEMEMLOG((long int)(&(jogadores[i].mao[0].valor)),sizeof(int),jogadores[i].id);
+    LEMEMLOG((long int)(&(jogadores[i].mao[0].naipe)),sizeof(std::string),jogadores[i].id);
     if (jogadores[i].mao[0].isEmpty()){
       ranking[i] = Invalid;
       continue;

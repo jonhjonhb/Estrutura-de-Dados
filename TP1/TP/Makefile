@@ -42,7 +42,6 @@ gdb: $(EXE)
 
 gerador: $(EXE) 
 	gcc src/geracarga.c -I$(INC) -o bin/gerador -lm
-	bin/gerador -o "entrada.txt" -r 3 -j 8 -v 1
 
 jogo: $(EXE)
 
@@ -58,9 +57,22 @@ $(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
 $(OBJ)/memlog.o: $(HDRS) $(SRC)/memlog.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/memlog.o $(SRC)/memlog.cpp 
 
+performance: gerador
+	bin/gerador -o "entrada.txt" -r 1000 -j 9
+	$(EXE)
+	gprof $(EXE) gmon.out > ../temp/gprof-1000x10.txt
+	bin/gerador -o "entrada.txt" -r 2000 -j 9
+	$(EXE)
+	gprof $(EXE) gmon.out > ../temp/gprof-2000x10.txt
+	bin/gerador -o "entrada.txt" -r 3000 -j 9
+	$(EXE)
+	gprof $(EXE) gmon.out > ../temp/gprof-3000x10.txt
+	
 gprof:
 	gprof $(EXE) gmon.out > ../temp/gprof.txt
 
 perf:
 	$(ANALISAMEM) -i ../temp/partidagprof.out -p ../temp/perf
 	gnuplot ../temp/*.gp
+
+teste: clean jogar gprof perf
