@@ -1,18 +1,30 @@
-2 825 OP
-fwkhopkmc
-scdxrjm
-2 475 OP
-arzowkkyhid
-xpklorellnmpa
-1 1250 OP
-xpklorellnmpa
+1 1100 HC
+Eduarda
+1 1700 OP
+Renan
+1 2200 TP
+Yurih
+1 1150 TK
+Eduarda
+2 800 S
+Renan
+Yurih
+1 1300 F
+Eduarda
+1 1100 FH
+Ellen
+1 900 FK
+Pedro
+1 1300 SF
+Pedro
+0 0 I
+0 0 I
 ####
-xpklorellnmpa 1875
-fwkhopkmc 1125
-scdxrjm 775
-arzowkkyhid 575
-buqcljjivs 350
-lrbbmqbh 250
-hnwnkuewhsqm 250
-frxsjybldbef 150
-rcbynecdyg 50
+Eduarda 4050
+Pedro 3050
+Yurih 2900
+Renan 2450
+Ellen 1950
+Lucas 900
+Gabriel 650
+Victor 50

@@ -35,7 +35,6 @@ class Carta{
     void imprimeCarta();
     bool isEmpty(){return valor == 0 && naipe == "";};
     //getters
-    Carta getCarta(){return *this;};
     int getValor(){return valor;};
     std::string getNaipe(){return naipe;};
     //setters
@@ -52,9 +51,13 @@ class Jogador{
   public:
     Jogador(): name(""), amount(0) {}
     Jogador(std::string str, int din): name(str), amount(din) {}
-    Jogador(std::string str, int din, std::string carta[]): name(str), amount(din){setMao(carta);};
+    Jogador(std::string str, int din, std::string carta[], int _id): name(str), amount(din), id(_id){setMao(carta);};
     //funcoes
-    bool isEmpty(){return (name == "" && amount == 0);};
+    bool isEmpty(){
+      LEMEMLOG((long int)(&name),sizeof(std::string),id);
+      LEMEMLOG((long int)(&amount),sizeof(int),id);
+      return (name == "" && amount == 0);
+    };
     bool isEqualNaipe();
     void limpaMao();
     bool contemCarta(int valor);
@@ -65,35 +68,34 @@ class Jogador{
     void aumentaCartaAs();
     void diminuirCartaAs();
     //setters
-    void setAtributtes(std::string a, double b){
-      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
-      setName(a);
-      setAmount(b);
+    void setAtributtes(std::string _name, double _amount){
+      setName(_name);
+      setAmount(_amount);
     };
-    void setName(std::string a){
-      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
-      name = a;
+    void setName(std::string _name){
+      ESCREVEMEMLOG((long int)(&name),sizeof(std::string),id);
+      name = _name;
     };
-    void setAmount(int b){
-      ESCREVEMEMLOG((long int)(this),sizeof(double),id);
-      amount = b;
+    void setAmount(int _amount){
+      ESCREVEMEMLOG((long int)(&amount),sizeof(int),id);
+      amount = _amount;
     };
     void setMao(std::string strCarta[]);
     //getters
     clasificacao getClassificacao();
     std::string getName(){
-      LEMEMLOG((long int)(this),sizeof(double),id);
+      LEMEMLOG((long int)(&name),sizeof(std::string),id);
       return name;
     };
     int getValorPar(int ordem = 1);
     int getValorTripla();
     int getValorQuadra();
     int getAmount(){
-      LEMEMLOG((long int)(this),sizeof(double),id);
+      LEMEMLOG((long int)(&amount),sizeof(int),id);
       return amount;
     };
     void getValores();
-  private:  
+  private:
     std::string name;
     int amount;
     int id;
