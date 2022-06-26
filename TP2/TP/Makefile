@@ -21,7 +21,7 @@ INC = include
 BIN = bin
 FER = -pg -O3
 OBJS = $(OBJ)/analisador.o $(OBJ)/memlog.o #$(OBJ)/poker.o
-HDRS = $(INC)/memlog.hpp $(INC)/msgassert.h #$(INC)/poker.hpp 
+HDRS = $(INC)/memlog.hpp $(INC)/msgassert.h $(INC)/Word.hpp $(INC)/Text.hpp $(INC)/listaEncadeada.hpp 
 OBJSM = $(OBJ)/analisamem.o
 HDRSM = $(INC)/msgassert.h
 CFLAGS = $(FER) -Wall -c -I$(INC)
@@ -50,9 +50,6 @@ $(EXE): $(OBJS)
 
 $(OBJ)/analisador.o: $(HDRS) $(SRC)/analisador.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/analisador.o $(SRC)/analisador.cpp 
-
-$(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
-	$(CC) $(CFLAGS) -o $(OBJ)/poker.o $(SRC)/poker.cpp 
 
 $(OBJ)/memlog.o: $(HDRS) $(SRC)/memlog.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/memlog.o $(SRC)/memlog.cpp 
