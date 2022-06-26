@@ -2,6 +2,7 @@
 #define WORDH
 
 #include <string>
+#include <fstream>
 
 class Word{
   public:
@@ -13,6 +14,7 @@ class Word{
     void setWord(std::string str);
     void setFrequencia(int number);
     void operator++(){_freq++;};
+    void imprime(std::ofstream &arqSaida);
   private:
     std::string _word;
     int _freq;
@@ -24,6 +26,10 @@ void Word::setWord(std::string str){
 
 void Word::setFrequencia(int number){
   _freq = number;
+}
+
+void Word::imprime(std::ofstream &arqSaida){
+  arqSaida << getWord() << " " << getFrequencia() << "\n";
 }
 
 #endif
