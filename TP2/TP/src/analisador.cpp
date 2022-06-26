@@ -1,5 +1,5 @@
 #include <getopt.h>
-#include <string>
+#include "Text.hpp"
 #include <cstring>
 #include "memlog.hpp"
 #include "msgassert.h"
