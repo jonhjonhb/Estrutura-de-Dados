@@ -8,7 +8,7 @@ class Word{
   public:
     Word():_word(""), _freq(0){}
     Word(std::string str, int freq):_word(str), _freq(freq){}
-    ~Word();
+    // ~Word();
     std::string getWord(){return _word;};
     int getFrequencia(){return _freq;};
     void setWord(std::string str);

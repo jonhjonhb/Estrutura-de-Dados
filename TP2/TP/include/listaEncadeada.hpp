@@ -17,7 +17,7 @@ class Lista{
     virtual Word RemoveFinal() = 0;
     virtual Word RemovePosicao(int pos) = 0;
     virtual Word Pesquisa(std::string c) = 0;
-    virtual void Imprime() = 0;
+    virtual void Imprime(std::ofstream &arqSaida) = 0;
     virtual void Limpa() = 0;
   protected:
     int tamanho;
