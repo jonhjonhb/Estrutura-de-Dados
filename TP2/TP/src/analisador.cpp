@@ -1,15 +1,14 @@
 #include <getopt.h>
 #include <string>
 #include <cstring>
-#include "memlog.h"
+#include "memlog.hpp"
 #include "msgassert.h"
 
 // variaveis globais para opcoes
-static int opescolhida;
 char logName[100];
 std::string fileInput;
 std::string fileOutput;
-int optx, opty, regmem;
+int regmem;
 
 void uso()
 // Descricao: imprime as opcoes de uso
@@ -35,15 +34,11 @@ void parse_args(int argc,char ** argv)
 {
 		 // variaveis externas do getopt
 		 extern char * optarg;
-		 extern int optind;
 
 		 // variavel auxiliar
 		 int c;
 
 		 // inicializacao variaveis globais para opcoes
-		 opescolhida = -1;
-		 optx = -1;
-		 opty = -1;
 		 regmem = 0;
 		 logName[0] = 0;
 		 fileInput = "";
@@ -55,15 +50,20 @@ void parse_args(int argc,char ** argv)
 			 switch(c) {
 				 case 'p':
             strcpy(logName,optarg);
+            break;
 				 case 'o':
             fileOutput = optarg;
+            break;
 				 case 'i': 
-            fileOutput = optarg;
+            fileInput = optarg;
+            break;
 				 case 'l': 
 						regmem = 1;
+            break;
 				 default:
-									uso();
-									exit(1);
+            uso();
+            exit(1);
+            break;
 			 }
 			 // verificacao da consistencia das opcoes
 			 erroAssert(strlen(logName)>0,
@@ -96,7 +96,7 @@ int main(int argc, char ** argv)
 		desativaMemLog();
 	}
 
-  
+
 
 	// conclui registro de acesso
 	return finalizaMemLog();

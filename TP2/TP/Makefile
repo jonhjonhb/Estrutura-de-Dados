@@ -20,22 +20,22 @@ OBJ = obj
 INC = include
 BIN = bin
 FER = -pg -O3
-OBJS = $(OBJ)/poker.o $(OBJ)/jogo.o $(OBJ)/memlog.o
-HDRS = $(INC)/poker.hpp $(INC)/memlog.hpp $(INC)/msgassert.h
-OBJSM = $(OBJ)/pilhaindexada.o $(OBJ)/analisamem.o
-HDRSM = $(INC)/pilhaindexada.h $(INC)/msgassert.h
+OBJS = $(OBJ)/analisador.o $(OBJ)/memlog.o #$(OBJ)/poker.o
+HDRS = $(INC)/memlog.hpp $(INC)/msgassert.h #$(INC)/poker.hpp 
+OBJSM = $(OBJ)/analisamem.o
+HDRSM = $(INC)/msgassert.h
 CFLAGS = $(FER) -Wall -c -I$(INC)
 ANALISAMEM = ../../aulapratica2/analisamem/bin/analisamem
 
-EXE = $(BIN)/jogo
+EXE = $(BIN)/analisador
 
-all: jogo bin
+all: analisador bin
 
 clean:
 	rm -f $(OBJ)/* $(BIN)/* *.out ../temp/*
 
 jogar: $(EXE)
-	$(EXE)
+	$(EXE) -p ../temp/gprofTeste.out -i entrada.txt -o saida.txt -l
 
 gdb: $(EXE) 
 	gdb $(EXE)
@@ -43,13 +43,13 @@ gdb: $(EXE)
 gerador: $(EXE) 
 	gcc src/geracarga.c -I$(INC) -o bin/gerador -lm
 
-jogo: $(EXE)
+analisador: $(EXE)
 
 $(EXE): $(OBJS)
 	$(CC) $(FER) -o $(EXE) $(OBJS) $(LIBS)
 
-$(OBJ)/jogo.o: $(HDRS) $(SRC)/jogo.cpp
-	$(CC) $(CFLAGS) -o $(OBJ)/jogo.o $(SRC)/jogo.cpp 
+$(OBJ)/analisador.o: $(HDRS) $(SRC)/analisador.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/analisador.o $(SRC)/analisador.cpp 
 
 $(OBJ)/poker.o: $(HDRS) $(SRC)/poker.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/poker.o $(SRC)/poker.cpp 
