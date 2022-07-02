@@ -50,6 +50,7 @@ class ListaEncadeada : public Lista {
     Word RemovePosicao(int pos);
     Word Pesquisa(std::string c);
     void Imprime(std::ofstream &arqSaida);
+    std::string Imprime();
     void Limpa();
   private:
     TipoCelula* primeiro;
@@ -86,12 +87,15 @@ ListaEncadeada::~ListaEncadeada(){
 void ListaEncadeada::InsereInicio(Word item){
   TipoCelula *nova;
   nova = new TipoCelula();
-  nova->item = item;
-  nova->prox = primeiro->prox;
-  primeiro->prox = nova;
-  tamanho++;
-  if(nova->prox == NULL)
-    ultimo = nova;
+  Word aux = Pesquisa(item.getWord());
+  if (!(item.getWord() == aux.getWord())){
+    nova->item = item;
+    nova->prox = primeiro->prox;
+    primeiro->prox = nova;
+    tamanho++;
+    if(nova->prox == NULL)
+      ultimo = nova;
+  }
 };
 
 void ListaEncadeada::InsereFinal(Word item){
@@ -177,12 +181,12 @@ Word ListaEncadeada::RemovePosicao(int pos) {;
 Word ListaEncadeada::Pesquisa(std::string c) {
   Word aux;
   TipoCelula *p;
-  if (tamanho == 0)
-    throw "ERRO: Lista vazia!";
+  if (tamanho == 0) return aux;
   p = primeiro->prox;
   aux.setWord("");
   while (p!=NULL) {
     if (p->item.getWord() == c) {
+      ++p->item;
       aux = p->item;
       break;
     }
@@ -198,6 +202,17 @@ void ListaEncadeada::Imprime(std::ofstream &arqSaida) {
     p->item.imprime(arqSaida);
     p = p->prox;
   }
+};
+
+std::string ListaEncadeada::Imprime() {
+  TipoCelula *p;
+  std::string aux = "";
+  p = primeiro->prox;
+  while (p!=NULL) {
+    aux = p->item.imprime() + aux;
+    p = p->prox;
+  }
+  return aux;
 };
 
 void ListaEncadeada::Limpa() {

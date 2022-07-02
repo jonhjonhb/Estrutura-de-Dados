@@ -6,8 +6,8 @@
 
 // variaveis globais para opcoes
 char logName[100];
-std::string fileInput;
-std::string fileOutput;
+std::string fileNameInput;
+std::string fileNameOutput;
 int regmem;
 
 void uso()
@@ -41,21 +41,21 @@ void parse_args(int argc,char ** argv)
 		 // inicializacao variaveis globais para opcoes
 		 regmem = 0;
 		 logName[0] = 0;
-		 fileInput = "";
-		 fileOutput = "";
+		 fileNameInput = "";
+		 fileNameOutput = "";
 
 		 // getopt - letra indica a opcao, : junto a letra indica parametro
 		 // no caso de escolher mais de uma operacao, vale a ultima
-		 while ((c = getopt(argc, argv, "smtp:o:i:l")) != EOF)
+		 while ((c = getopt(argc, argv, "o:p:i:l")) != EOF)
 			 switch(c) {
 				 case 'p':
             strcpy(logName,optarg);
             break;
-				 case 'o':
-            fileOutput = optarg;
-            break;
 				 case 'i': 
-            fileInput = optarg;
+            fileNameInput = optarg;
+            break;
+				 case 'o':
+            fileNameOutput = optarg;
             break;
 				 case 'l': 
 						regmem = 1;
@@ -68,10 +68,46 @@ void parse_args(int argc,char ** argv)
 			 // verificacao da consistencia das opcoes
 			 erroAssert(strlen(logName)>0,
 				 "analisador - nome de arquivo de registro de acesso tem que ser definido");
-			 erroAssert(fileInput != "",
+			 erroAssert(fileNameInput != "",
 				 "analisador - nome do arquivo de entrada tem que ser definido");
-			 erroAssert(fileOutput != "",
+			 erroAssert(fileNameOutput != "",
 				 "analisador - nome do arquivo de saida tem que ser definido");
+}
+
+void readInput(Text *text){
+	std::string line = "",lineText = "";
+	std::ifstream fileInput(fileNameInput);
+	int numChars = 0;
+	while (getline(fileInput, line)){
+		if (line == "#ORDEM"){
+			while (line != "#TEXTO" && getline(fileInput, line)){
+				for(char letter: line){
+					if(letter == ' '){continue;}
+					numChars--;
+					text->newOrder(tolower(letter));
+				}
+			}
+			while (getline(fileInput, line)){
+				lineText += line;
+				lineText += " ";
+			}
+			text->setValue(lineText);
+		}else if (line == "#TEXTO"){
+			while (line != "#ORDEM" && getline(fileInput, line)){
+				lineText += line;
+				lineText += " ";
+			}
+			text->setValue(lineText);
+			while (getline(fileInput, line)){
+				for(char letter: line){
+					if(letter == ' '){continue;}
+					numChars--;
+					text->newOrder(tolower(letter));
+				}
+			}
+		}
+	}
+	fileInput.close();
 }
 
 int main(int argc, char ** argv)
@@ -79,9 +115,11 @@ int main(int argc, char ** argv)
 // Entrada: argc e argv
 // Saida: escrita no arquivo escolhido
 {
-	// ate 3 matrizes sao utilizadas, dependendo da operacao
-	// mat_tipo a, b, c;
-
+	std::ofstream fileOutput(fileNameOutput);
+	erroAssert(!fileOutput.fail(), "Arquivo de saida - Nao foi possivel abrir o arquivo");
+	Text text;
+	// std::fstream fileOutput(fileNameOutput,std::ios::out);
+	
 	// avaliar linha de comando
 	parse_args(argc,argv);
 
@@ -96,8 +134,14 @@ int main(int argc, char ** argv)
 		desativaMemLog();
 	}
 
-
+	readInput(&text);
+	text.cleanText();
+	text.createList();
+	std::cout << text.Imprime();
+	// text.Imprime(fileOutput);
+	fileOutput << text.Imprime();
 
 	// conclui registro de acesso
+	fileOutput.close();
 	return finalizaMemLog();
 }
