@@ -45,6 +45,7 @@ class ListaEncadeada : public Lista {
     ~ListaEncadeada();
     Word GetItem(int pos);
     Word *getItem(int pos);
+    TipoCelula *getCelula(int pos);
     void SetItem(Word item, int pos);
     void InsereInicio(Word item);
     void InsereFinal(Word item);
@@ -157,6 +158,12 @@ Word *ListaEncadeada::getItem(int pos){
   return &p->item;
 }
 
+TipoCelula *ListaEncadeada::getCelula(int pos){
+  TipoCelula *p;
+  p = Posiciona(pos);
+  return p;
+}
+
 void ListaEncadeada::SetItem(Word item, int pos){
   TipoCelula *p;
   p = Posiciona(pos);
@@ -241,7 +248,7 @@ std::string ListaEncadeada::Imprime() {
   std::string aux = "";
   p = primeiro->prox;
   while (p!=NULL) {
-    aux = p->item.imprime() + aux;
+    aux = aux + p->item.imprime();
     p = p->prox;
   }
   return aux;
@@ -267,20 +274,23 @@ void ListaEncadeada::Ordena(TipoCelula &primeiro, TipoCelula &ultimo){
 }
 
 void ListaEncadeada::Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula *i, TipoCelula *j){
-  Word *x;
-  *i = primeiro; *j = ultimo;
-  x = getItem(GetTamanho()/2); /* obtem o pivo x */
+  // Word *x;
+  TipoCelula *x;
+  // x = getItem(GetTamanho()/2); /* obtem o pivo x */
+  x = getCelula(GetTamanho()/2); /* obtem o pivo x */
+  *i = primeiro; *j = *x->prox;
   // x = A[(*i + *j)/2]; /* obtem o pivo x */
   do{
-    while (x->getWord() > i->item.getWord()){
+    while (x->item.getWord() > i->item.getWord() && i->prox != NULL) {
       i = i->prox;
     }
-    while (x->getWord() < j->item.getWord()) {
+    while (x->item.getWord() < j->item.getWord() && j->prox != NULL) {
       j = j->prox;
     }
     if (*i <= *j){
       swapElement(i, j);
-      i = i->prox; j = j->prox;
+      if (i->prox != NULL){ i = i->prox;}
+      if (j->prox != NULL){ j = j->prox;}
     }
   } while (*i <= *j);
 }

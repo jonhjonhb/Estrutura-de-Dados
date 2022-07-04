@@ -74,14 +74,14 @@ void Text::createList(){
     if(letter == ' '){
       aux.setWord(wordInText);
       aux.setOrder(tableOrder);
-      words.InsereInicio(aux);
+      words.InsereFinal(aux);
       wordInText = "";
       continue;
     }
     wordInText += letter;
   }
   aux.setWord(wordInText);
-  words.InsereInicio(aux);
+  words.InsereFinal(aux);
 }
 
 void Text::toLowerCase(){
