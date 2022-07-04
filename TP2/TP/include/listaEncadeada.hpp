@@ -128,10 +128,13 @@ void ListaEncadeada::InsereInicio(Word item){
 void ListaEncadeada::InsereFinal(Word item){
   TipoCelula *nova;
   nova = new TipoCelula();
-  nova->item = item;
-  ultimo->prox = nova;
-  ultimo = nova;
-  tamanho++;
+  Word aux = Pesquisa(item.getWord());
+  if (!(item.getWord() == aux.getWord())){
+    nova->item = item;
+    ultimo->prox = nova;
+    ultimo = nova;
+    tamanho++;
+  }
 };
 
 void ListaEncadeada::InserePosicao(Word item, int pos) {
