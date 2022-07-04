@@ -7,14 +7,14 @@
 
 class Text{
   public:
-    Text():_text(""),countLettersOrder(0){inicializaOrdem();}
-    Text(std::string str):_text(str){}
+    Text():_text(""){}
+    ListaEncadeada* getList(){return &words;};
     void setValue(std::string str){_text = str;};
-    void newOrder(char letter){
-      countLettersOrder++;
-      orderLexografic[(int)letter] = 96 + countLettersOrder;
-    };
+    void newOrder(char letter){tableOrder->setLetter(letter);};
+    void QuickSort(){words.QuickSort();};
     void createList();
+    void readInput(std::string fileNameInput, OrderLexografic &table);
+    void assignmentOrder(){words.assignmentOrder(tableOrder);};
     void cleanText(){
       toLowerCase();
       toRemoveSpecial();
@@ -23,22 +23,48 @@ class Text{
     std::string Imprime(){
       return words.Imprime() + "#FIM\n";
     };
-    int operator()(char letter);
   private:
     bool isEmpty(){return (_text == "") ;};
-    void inicializaOrdem();
     void toLowerCase();
     void toRemoveSpecial();
     std::string _text;
     ListaEncadeada words;
-    int orderLexografic[26];
-    int countLettersOrder;
+    OrderLexografic *tableOrder;
 };
 
-void Text::inicializaOrdem(){
-  for (int i = 0; i < 26; i++){
-    orderLexografic[i] = 97 + i;
-  }
+void Text::readInput(std::string fileNameInput, OrderLexografic &table){
+	std::string line = "",lineText = "";
+	std::ifstream fileInput(fileNameInput);
+	while (getline(fileInput, line) && line != ""){
+		if (line == "#ORDEM"){
+			while (getline(fileInput, line)){
+				if (line == "#TEXTO"){break;}
+				for(char letter: line){
+					if(letter == ' '){continue;}
+					table.setLetter(tolower(letter));
+				}
+			}
+			while (getline(fileInput, line)){
+				lineText += line;
+				lineText += " ";
+			}
+			setValue(lineText);
+		}else if (line == "#TEXTO"){
+			while (getline(fileInput, line)){
+				if (line == "#ORDEM"){break;}
+				lineText += line;
+				lineText += " ";
+			}
+			setValue(lineText);
+			while (getline(fileInput, line)){
+				for(char letter: line){
+					if(letter == ' '){continue;}
+					table.setLetter(tolower(letter));
+				}
+			}
+		}
+	}
+	fileInput.close();
 }
 
 void Text::createList(){
@@ -47,6 +73,7 @@ void Text::createList(){
   for (char letter : _text){
     if(letter == ' '){
       aux.setWord(wordInText);
+      aux.setOrder(tableOrder);
       words.InsereInicio(aux);
       wordInText = "";
       continue;
@@ -85,15 +112,6 @@ void Text::toRemoveSpecial(){
     newText = newText.substr(0, newText.size() - 1);
   }
   setValue(newText);
-}
-
-int Text::operator()(char letter){
-  for(int i = 0; i < 26; i++){
-    if(orderLexografic[i] == (int)letter){
-      return i;
-    }
-  }
-  return 0;
 }
 
 #endif

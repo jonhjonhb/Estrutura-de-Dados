@@ -30,6 +30,9 @@ class TipoCelula{
       item.setFrequencia(0);
       prox = NULL;
     }
+    bool operator<(const TipoCelula& outro) const;
+    void operator=(const TipoCelula& outro){item = outro.item; prox = outro.prox;}
+    bool operator<=(const TipoCelula& outro) const;
   private:
     Word item;
     TipoCelula *prox;
@@ -41,6 +44,7 @@ class ListaEncadeada : public Lista {
     ListaEncadeada();
     ~ListaEncadeada();
     Word GetItem(int pos);
+    Word *getItem(int pos);
     void SetItem(Word item, int pos);
     void InsereInicio(Word item);
     void InsereFinal(Word item);
@@ -52,11 +56,33 @@ class ListaEncadeada : public Lista {
     void Imprime(std::ofstream &arqSaida);
     std::string Imprime();
     void Limpa();
+    void assignmentOrder(OrderLexografic *table);
+    void swapElement(TipoCelula *i, TipoCelula *j);
+    void QuickSort(){Ordena(*primeiro->prox, *ultimo);}
   private:
+    void Ordena(TipoCelula &primeiro, TipoCelula &ultimo);
+    void Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula *i, TipoCelula *j);
     TipoCelula* primeiro;
     TipoCelula* ultimo;
     TipoCelula* Posiciona(int pos, bool antes);
 };
+
+void ListaEncadeada::assignmentOrder(OrderLexografic *table){
+  TipoCelula *p;
+  p = primeiro->prox;
+  while (p!=NULL) {
+    p->item.setOrder(table);
+    p = p->prox;
+  }
+}
+
+bool TipoCelula::operator<(const TipoCelula& outro) const {
+	return item < outro.item;
+}
+
+bool TipoCelula::operator<=(const TipoCelula& outro) const {
+	return item <= outro.item;
+}
 
 TipoCelula* ListaEncadeada::Posiciona(int pos, bool antes=false){
   TipoCelula *p; int i;
@@ -123,6 +149,12 @@ Word ListaEncadeada::GetItem(int pos){
   TipoCelula *p;
   p = Posiciona(pos);
   return p->item;
+}
+
+Word *ListaEncadeada::getItem(int pos){
+  TipoCelula *p;
+  p = Posiciona(pos);
+  return &p->item;
 }
 
 void ListaEncadeada::SetItem(Word item, int pos){
@@ -226,5 +258,39 @@ void ListaEncadeada::Limpa() {
   ultimo = primeiro;
   tamanho = 0;
 };
+
+void ListaEncadeada::Ordena(TipoCelula &primeiro, TipoCelula &ultimo){
+  TipoCelula i, j;
+  Particao(primeiro, ultimo, &i, &j);
+  if (primeiro < j) Ordena(primeiro, j);
+  if (i < ultimo) Ordena(i, ultimo);
+}
+
+void ListaEncadeada::Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula *i, TipoCelula *j){
+  Word *x;
+  *i = primeiro; *j = ultimo;
+  x = getItem(GetTamanho()/2); /* obtem o pivo x */
+  // x = A[(*i + *j)/2]; /* obtem o pivo x */
+  do{
+    if (i->prox==NULL || j->prox==NULL){break;}
+    while (x->getWord() > i->item.getWord()){
+      i = i->prox;
+    }   
+    while (x->getWord() < j->item.getWord()) {
+      j = j->prox;
+    }
+    if (*i <= *j){
+      swapElement(i, j);
+      i = i->prox; j = j->prox;
+    }
+  } while (*i <= *j);
+}
+
+void ListaEncadeada::swapElement(TipoCelula *i, TipoCelula *j){
+  TipoCelula *aux;
+  aux = i;
+  i = j;
+  j = aux;
+}
 
 #endif

@@ -51,7 +51,7 @@ void parse_args(int argc,char ** argv)
 				 case 'p':
             strcpy(logName,optarg);
             break;
-				 case 'i': 
+				 case 'i':
             fileNameInput = optarg;
             break;
 				 case 'o':
@@ -74,51 +74,14 @@ void parse_args(int argc,char ** argv)
 				 "analisador - nome do arquivo de saida tem que ser definido");
 }
 
-void readInput(Text *text){
-	std::string line = "",lineText = "";
-	std::ifstream fileInput(fileNameInput);
-	int numChars = 0;
-	while (getline(fileInput, line)){
-		if (line == "#ORDEM"){
-			while (line != "#TEXTO" && getline(fileInput, line)){
-				for(char letter: line){
-					if(letter == ' '){continue;}
-					numChars--;
-					text->newOrder(tolower(letter));
-				}
-			}
-			while (getline(fileInput, line)){
-				lineText += line;
-				lineText += " ";
-			}
-			text->setValue(lineText);
-		}else if (line == "#TEXTO"){
-			while (line != "#ORDEM" && getline(fileInput, line)){
-				lineText += line;
-				lineText += " ";
-			}
-			text->setValue(lineText);
-			while (getline(fileInput, line)){
-				for(char letter: line){
-					if(letter == ' '){continue;}
-					numChars--;
-					text->newOrder(tolower(letter));
-				}
-			}
-		}
-	}
-	fileInput.close();
-}
-
 int main(int argc, char ** argv)
 // Descricao: programa principal para execucao 
 // Entrada: argc e argv
 // Saida: escrita no arquivo escolhido
 {
-	std::ofstream fileOutput(fileNameOutput);
-	erroAssert(!fileOutput.fail(), "Arquivo de saida - Nao foi possivel abrir o arquivo");
+
 	Text text;
-	// std::fstream fileOutput(fileNameOutput,std::ios::out);
+	OrderLexografic tableOrder;
 	
 	// avaliar linha de comando
 	parse_args(argc,argv);
@@ -134,14 +97,26 @@ int main(int argc, char ** argv)
 		desativaMemLog();
 	}
 
-	readInput(&text);
+	// std::filebuf fb;
+  // fb.open (fileNameOutput,std::ios::out);
+  // std::ostream os(&fb);
+  // os << "Test sentence\n";
+  // fb.close();
+
+	// std::ofstream output(fileNameOutput);
+	// erroAssert(!output.fail(), "Arquivo de saida - Nao foi possivel abrir o arquivo");
+	text.readInput(fileNameInput,tableOrder);
 	text.cleanText();
 	text.createList();
+	text.assignmentOrder();
+	// text.QuickSort();
+	// QuickSort(text.getList());
 	std::cout << text.Imprime();
-	// text.Imprime(fileOutput);
-	fileOutput << text.Imprime();
-
+	// text.Imprime(output);
+	// output << text.Imprime();
+	// output << text.Imprime();
+	
 	// conclui registro de acesso
-	fileOutput.close();
+	// output.close();
 	return finalizaMemLog();
 }

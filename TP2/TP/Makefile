@@ -40,9 +40,6 @@ jogar: $(EXE)
 gdb: $(EXE) 
 	gdb $(EXE)
 
-gerador: $(EXE) 
-	gcc src/geracarga.c -I$(INC) -o bin/gerador -lm
-
 analisador: $(EXE)
 
 $(EXE): $(OBJS)
