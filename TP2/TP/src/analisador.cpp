@@ -109,7 +109,7 @@ int main(int argc, char ** argv)
 	text.cleanText();
 	text.createList();
 	text.assignmentOrder();
-	// text.QuickSort();
+	text.QuickSort();
 	// QuickSort(text.getList());
 	std::cout << text.Imprime();
 	// text.Imprime(output);

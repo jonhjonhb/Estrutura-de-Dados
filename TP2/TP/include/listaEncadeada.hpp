@@ -272,10 +272,9 @@ void ListaEncadeada::Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula
   x = getItem(GetTamanho()/2); /* obtem o pivo x */
   // x = A[(*i + *j)/2]; /* obtem o pivo x */
   do{
-    if (i->prox==NULL || j->prox==NULL){break;}
     while (x->getWord() > i->item.getWord()){
       i = i->prox;
-    }   
+    }
     while (x->getWord() < j->item.getWord()) {
       j = j->prox;
     }

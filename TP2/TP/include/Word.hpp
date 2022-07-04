@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 
-class OrderLexografic{
+class OrderLexografic {
   public:
     OrderLexografic():countLettersOrder(26){inicialize();};
     void setLetter(char letter){
@@ -28,10 +28,10 @@ class Word{
     void setFrequencia(int number);
     void setOrder(OrderLexografic *table){tableOrder = table;};
     void operator++(){_freq++;};
-    void operator=(const Word& outro);
-    bool operator<(const Word& outro) const;
-    bool operator<=(const Word& outro) const;
-    bool operator==(const Word& outro) const;
+    Word& operator=(const Word& other);
+    bool operator<(const Word& other) const;
+    bool operator<=(const Word& other) const;
+    bool operator==(const Word& other) const;
     void imprime(std::ofstream &arqSaida) const;
     std::string imprime() const;
   private:
@@ -63,13 +63,12 @@ std::string Word::imprime() const {
   return getWord() + " " + std::to_string(getFrequencia()) + "\n";
 }
 
-bool Word::operator<(const Word& outro) const{
-  if(tableOrder==NULL) return getWord() < outro.getWord();
-	auto lhs = _word.begin();
-	auto rhs = outro._word.begin();
+bool Word::operator<(const Word& other) const{
+  auto lhs = _word.begin();
+	auto rhs = other._word.begin();
   int lhs_val = 0, rhs_val = 0;
 
-	for (; lhs != _word.end() && rhs != outro._word.end(); ++lhs,++rhs){
+	for (; lhs != _word.end() && rhs != other._word.end(); ++lhs,++rhs){
 		// lhs_val = (*tableOrder)(*lhs);
 		lhs_val = tableOrder->getValue(*lhs);
 		// rhs_val = (*tableOrder)(*rhs);
@@ -81,27 +80,28 @@ bool Word::operator<(const Word& outro) const{
 	}
 
 	if(lhs == _word.end()){
-		if(rhs == outro._word.end()){
+		if(rhs == other._word.end()){
 			return 0;
-		}
-		else return -1;
+		}else {
+      return -1;
+    }
 	}
 	return 1;
 }
 
-bool Word::operator<=(const Word& outro) const {
-	return (*this == outro || *this < outro);
+bool Word::operator<=(const Word& other) const {
+	return (*this == other || *this < other);
 }
 
-bool Word::operator==(const Word& outro) const {
-	return getWord() == outro.getWord();
+bool Word::operator==(const Word& other) const {
+	return getWord() == other.getWord();
 }
 
-void Word::operator=(const Word& outro) {
-  setWord(outro.getWord());
-	// _word = outro._word;
-  setFrequencia(outro.getFrequencia());
-  // _freq = outro._freq;
+Word& Word::operator=(const Word& other){
+  setWord(other.getWord());
+  setFrequencia(other.getFrequencia());
+  setOrder(other.tableOrder);
+  return *this;
 }
 
 #endif
