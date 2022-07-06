@@ -97,26 +97,28 @@ int main(int argc, char ** argv)
 		desativaMemLog();
 	}
 
-	// std::filebuf fb;
-  // fb.open (fileNameOutput,std::ios::out);
-  // std::ostream os(&fb);
-  // os << "Test sentence\n";
-  // fb.close();
+// "Esquentando" arquivo para receber o resultado
+	std::filebuf fb;
+  fb.open (fileNameOutput,std::ios::out);
+  std::ostream os(&fb);
+  os << "Test\n";
+  fb.close();
+// FIM
 
-	// std::ofstream output(fileNameOutput);
-	// erroAssert(!output.fail(), "Arquivo de saida - Nao foi possivel abrir o arquivo");
+	std::ofstream output(fileNameOutput);
+	erroAssert(!output.fail(), "Arquivo de saida - Nao foi possivel abrir o arquivo");
 	text.readInput(fileNameInput,tableOrder);
 	text.cleanText();
 	text.createList();
 	text.assignmentOrder();
 	// text.QuickSort();
 	// QuickSort(text.getList());
-	std::cout << text.Imprime();
+	
 	// text.Imprime(output);
-	// output << text.Imprime();
+	output << text.Imprime();
 	// output << text.Imprime();
 	
+	output.close();
 	// conclui registro de acesso
-	// output.close();
 	return finalizaMemLog();
 }

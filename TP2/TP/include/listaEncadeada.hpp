@@ -281,21 +281,23 @@ void ListaEncadeada::Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula
   TipoCelula *x;
   // x = getItem(GetTamanho()/2); /* obtem o pivo x */
   x = getCelula(GetTamanho()/2); /* obtem o pivo x */
-  *i = primeiro; *j = *x->prox;
+  i = &primeiro; j = x->prox;
   // x = A[(*i + *j)/2]; /* obtem o pivo x */
   do{
-    while (x->item.getWord() > i->item.getWord() && i->prox != NULL) {
+    while (i->item < x->item && !(i->item == x->item)) {
+      if (i->prox == NULL){ break;}
       i = i->prox;
     }
-    while (x->item.getWord() < j->item.getWord() && j->prox != NULL) {
+    while (x->item < j->item && !(j->item == ultimo.item)) {
+      if (j->prox == NULL){ break;}
       j = j->prox;
     }
-    if (*i <= *j){
+    if (*j < *i) {
       swapElement(i, j);
       if (i->prox != NULL){ i = i->prox;}
       if (j->prox != NULL){ j = j->prox;}
     }
-  } while (*i <= *j);
+  } while (*j < *i);
 }
 
 void ListaEncadeada::swapElement(TipoCelula *i, TipoCelula *j){
