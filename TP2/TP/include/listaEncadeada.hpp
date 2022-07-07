@@ -30,9 +30,9 @@ class TipoCelula{
       item.setFrequencia(0);
       prox = NULL;
     }
-    bool operator<(const TipoCelula& outro) const;
-    void operator=(const TipoCelula& outro){item = outro.item; prox = outro.prox;}
-    bool operator<=(const TipoCelula& outro) const;
+    bool operator<(const TipoCelula& other) const;
+    void operator=(const TipoCelula& other){item = other.item; prox = other.prox;}
+    bool operator<=(const TipoCelula& other) const;
   private:
     Word item;
     TipoCelula *prox;
@@ -43,6 +43,7 @@ class ListaEncadeada : public Lista {
   public:
     ListaEncadeada();
     ~ListaEncadeada();
+    void troca(int i, int j);
     Word GetItem(int pos);
     Word *getItem(int pos);
     TipoCelula *getCelula(int pos);
@@ -59,10 +60,10 @@ class ListaEncadeada : public Lista {
     void Limpa();
     void assignmentOrder(OrderLexografic *table);
     void swapElement(TipoCelula *i, TipoCelula *j);
-    void QuickSort(){Ordena(*primeiro->prox, *ultimo);}
+    void QuickSort(){Ordena(1, tamanho);}
   private:
-    void Ordena(TipoCelula &primeiro, TipoCelula &ultimo);
-    void Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula *i, TipoCelula *j);
+    void Ordena(int Esq, int Dir);
+    void Particao(int Esq, int Dir, int *i, int *j);
     TipoCelula* primeiro;
     TipoCelula* ultimo;
     TipoCelula* Posiciona(int pos, bool antes);
@@ -77,12 +78,12 @@ void ListaEncadeada::assignmentOrder(OrderLexografic *table){
   }
 }
 
-bool TipoCelula::operator<(const TipoCelula& outro) const {
-	return item < outro.item;
+bool TipoCelula::operator<(const TipoCelula& other) const {
+	return item < other.item;
 }
 
-bool TipoCelula::operator<=(const TipoCelula& outro) const {
-	return item <= outro.item;
+bool TipoCelula::operator<=(const TipoCelula& other) const {
+	return item <= other.item;
 }
 
 TipoCelula* ListaEncadeada::Posiciona(int pos, bool antes=false){
@@ -269,42 +270,77 @@ void ListaEncadeada::Limpa() {
   tamanho = 0;
 };
 
-void ListaEncadeada::Ordena(TipoCelula &primeiro, TipoCelula &ultimo){
-  TipoCelula i, j;
-  Particao(primeiro, ultimo, &i, &j);
-  if (primeiro < j) Ordena(primeiro, j);
-  if (i < ultimo) Ordena(i, ultimo);
+void ListaEncadeada::Ordena(int Esq, int Dir){
+  int i, j;
+  Particao(Esq, Dir, &i, &j);
+  if (Esq < j) Ordena(Esq, j);
+  if (i < Dir) Ordena(i, Dir);
 }
 
-void ListaEncadeada::Particao(TipoCelula primeiro, TipoCelula ultimo, TipoCelula *i, TipoCelula *j){
-  // Word *x;
-  TipoCelula *x;
-  // x = getItem(GetTamanho()/2); /* obtem o pivo x */
-  x = getCelula(GetTamanho()/2); /* obtem o pivo x */
-  i = &primeiro; j = x->prox;
-  // x = A[(*i + *j)/2]; /* obtem o pivo x */
-  do{
-    while (i->item < x->item && !(i->item == x->item)) {
-      if (i->prox == NULL){ break;}
-      i = i->prox;
+void ListaEncadeada::Particao(int Esq, int Dir, int *i, int *j){
+  TipoCelula *x, *celJ, *celI;
+  *i = Esq; *j = Dir;
+  x = Posiciona((*i + *j)/2); /* obtem o pivo x */
+  do {
+    celI = Posiciona(*i);
+    while (!(x->item <= celI->item)) {
+      if (*i < tamanho) {
+        (*i)++;
+      } else {break;}
+      celI = Posiciona(*i);
     }
-    while (x->item < j->item && !(j->item == ultimo.item)) {
-      if (j->prox == NULL){ break;}
-      j = j->prox;
+    celJ = Posiciona(*j);
+    while (x->item < celJ->item) {
+      if (*j > 1) {
+        (*j)--;
+      } else {break;}
+      celJ = Posiciona(*j);
     }
-    if (*j < *i) {
-      swapElement(i, j);
-      if (i->prox != NULL){ i = i->prox;}
-      if (j->prox != NULL){ j = j->prox;}
+    if (*i < *j) {
+      // swapElement(Posiciona(*i, true), Posiciona(*j, true));
+      troca(*i,*j);
+      // w = A->posiciona(*i, false);
+      // A->removePosicao(*i);
+      // A->inserePosicao(A->posiciona((*j)-1, false)->item, *i);
+      // //A[*i] = A[*j]; 
+      // A->removePosicao(*j);
+      // A->inserePosicao(w->item, (*j)-1);
+      //A[*j] = w;
+      (*i)++; 
+      (*j)--;
     }
-  } while (*j < *i);
+  } while (*i <= *j);
 }
 
 void ListaEncadeada::swapElement(TipoCelula *i, TipoCelula *j){
-  TipoCelula *aux;
-  aux = i;
-  i = j;
-  j = aux;
+  TipoCelula *auxI, *auxJ;
+  auxI = i;
+  auxJ = j;
+  auxI->prox = j->prox;
+  auxI->prox->prox = i->prox->prox;
+  auxJ->prox = i->prox;
+  auxJ->prox->prox = j->prox->prox;
+  i = auxI;
+  j = auxJ;
+}
+
+void ListaEncadeada::troca(int i, int j) {
+  TipoCelula *x, *y, *p, *q, *r, *s;
+  // x e y as cel. anterior
+  x = Posiciona(i, true);
+  y =  Posiciona(j, true);
+  // p e q sao as cel. que quero torcar
+  p = x->prox; 
+  q = y->prox;
+  // r e s as cel. seguintes
+  r = p->prox;
+  s = q->prox;
+                
+  x->prox = q;
+  q->prox = r;
+
+  y->prox = p;
+  p->prox = s;
 }
 
 #endif
