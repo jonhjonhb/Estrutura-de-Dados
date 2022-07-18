@@ -2,10 +2,7 @@
 
 HashLista::HashLista(int n) {
   avl = new ArvoreBinaria[n];
-  ocupado = new bool[n];
   tam_max = n;
-  for(int i=0; i<n; i++)
-    ocupado[i] = false;
 }
 
 int HashLista::funcaohash(int chave) {
@@ -15,7 +12,6 @@ int HashLista::funcaohash(int chave) {
 int HashLista::insere(int chave, Email v) {
   int pos = funcaohash(chave);
   avl[pos].inserir(v); // insere item na lista
-  if ( !ocupado[pos] ) ocupado[pos] = true;
   return pos;
 }
   

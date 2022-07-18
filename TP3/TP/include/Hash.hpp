@@ -13,6 +13,5 @@ class HashLista {
   private:
     int funcaohash(int chave);
     ArvoreBinaria *avl;
-    bool *ocupado;
     int tam_max;
 };
