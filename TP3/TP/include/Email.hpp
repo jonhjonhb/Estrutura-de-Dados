@@ -13,6 +13,7 @@ class Email{
     void setMensagem(std::string str){msg = str;};
     void setChave(int v){id = v;};
     bool operator<(Email const &outro) const {return id < outro.getChave();};
+    bool operator>(Email const &outro) const {return id > outro.getChave();};
     bool operator<=(Email const &outro) const {return id <= outro.getChave();};
     bool operator!=(Email const &outro) const {return (id != outro.getChave()) || (destinatarioId != outro.destinatarioId);};
   private:
