@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------
 # Arquivo	: Makefile
-# Conteúdo	: compilar o programa matop
+# Conteúdo	: compilar o programa TP3
 # Autor		: Johnatan Augusto (johnatanaugusto@ufmg.br)
 # Histórico	: 2022-05-21 - arquivo criado
 #		: 2022-05-21 - estrutura de diretórios
@@ -34,13 +34,31 @@ all: tp3 bin
 
 comp: tp3
 	$(EXE) -i ../testes/input/entrada_1.txt -o ../testes/outputs/teste_1.txt -p ../temp/test.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_1.txt -2 ../testes/resposta/saida_1.txt
 	$(EXE) -i ../testes/input/entrada_2.txt -o ../testes/outputs/teste_2.txt -p ../temp/test.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_2.txt -2 ../testes/resposta/saida_2.txt 
 	$(EXE) -i ../testes/input/entrada_3.txt -o ../testes/outputs/teste_3.txt -p ../temp/test.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_3.txt -2 ../testes/resposta/saida_3.txt
 	$(EXE) -i ../testes/input/entrada_4.txt -o ../testes/outputs/teste_4.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_5.txt -o ../testes/outputs/teste_5.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_6.txt -o ../testes/outputs/teste_6.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_7.txt -o ../testes/outputs/teste_7.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_8.txt -o ../testes/outputs/teste_8.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_9.txt -o ../testes/outputs/teste_9.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_10.txt -o ../testes/outputs/teste_10.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_11.txt -o ../testes/outputs/teste_11.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_12.txt -o ../testes/outputs/teste_12.txt -p ../temp/test.txt
+	$(EXE) -i ../testes/input/entrada_13.txt -o ../testes/outputs/teste_13.txt -p ../temp/test.txt
+	$(AUTOTESTE) -1 ../testes/outputs/teste_1.txt -2 ../testes/resposta/saida_1.txt
+	$(AUTOTESTE) -1 ../testes/outputs/teste_2.txt -2 ../testes/resposta/saida_2.txt 
+	$(AUTOTESTE) -1 ../testes/outputs/teste_3.txt -2 ../testes/resposta/saida_3.txt
 	$(AUTOTESTE) -1 ../testes/outputs/teste_4.txt -2 ../testes/resposta/saida_4.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_5.txt -2 ../testes/outputs/teste_5.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_6.txt -2 ../testes/outputs/teste_6.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_7.txt -2 ../testes/outputs/teste_7.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_8.txt -2 ../testes/outputs/teste_8.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_9.txt -2 ../testes/outputs/teste_9.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_10.txt -2 ../testes/outputs/teste_10.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_11.txt -2 ../testes/outputs/teste_11.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_12.txt -2 ../testes/outputs/teste_12.txt
+	$(AUTOTESTE) -1 ../testes/resposta/teste_13.txt -2 ../testes/outputs/teste_13.txt
 
 clean:
 	rm -f $(OBJ)/* $(BIN)/* *.out ../temp/*

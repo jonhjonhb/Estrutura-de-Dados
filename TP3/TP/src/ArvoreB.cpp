@@ -159,39 +159,40 @@ NO * ArvoreBinaria::rotacaoEsquerda(NO * head){
   novoHead->altura = altura(novoHead);
   return novoHead;
 }
-/*
-NO * insertUtil(NO * head, T x){
+
+NO * ArvoreBinaria::insertUtil(NO * head, Email x){
   if(head==NULL){
-      NO * temp = new NO(x);
+      NO * temp = new NO();
+      temp->item = x;
       return temp;
   }
-  if(x < head->key) head->esq = insertUtil(head->esq, x);
-  else if(x > head->key) head->dir = insertUtil(head->dir, x);
-  head->altura = 1 + max(getAltura(head->esq), getAltura(head->dir));
-  int bal = getAltura(head->esq) - getAltura(head->dir);
-  if(bal>1){
-      if(x < head->esq->key){
-          return rotacaoDireita(head);
-      }else{
-          head->esq = rotacaoEsquerda(head->esq);
-          return rotacaoDireita(head);
-      }
-  }else if(bal<-1){
-      if(x > head->dir->key){
-          return rotacaoEsquerda(head);
-      }else{
-          head->dir = rotacaoDireita(head->dir);
-          return rotacaoEsquerda(head);
-      }
+  if(x < head->item) head->esq = insertUtil(head->esq, x);
+  else if(x > head->item) head->dir = insertUtil(head->dir, x);
+  head->altura = altura(head);
+  int fb = altura(head->esq) - altura(head->dir);
+  if(fb > 1){
+    if(x < head->esq->item){
+        return rotacaoDireita(head);
+    }else{
+        head->esq = rotacaoEsquerda(head->esq);
+        return rotacaoDireita(head);
+    }
+  }else if(fb < -1){
+    if(x > head->dir->item){
+        return rotacaoEsquerda(head);
+    }else{
+        head->dir = rotacaoDireita(head->dir);
+        return rotacaoEsquerda(head);
+    }
   }
   return head;
 }
 
-NO * removeUtil(NO * head, T x){
+NO * ArvoreBinaria::removeUtil(NO * head, Email x){
   if(head==NULL) return NULL;
-  if(x < head->key){
+  if(x < head->item){
       head->esq = removeUtil(head->esq, x);
-  }else if(x > head->key){
+  }else if(x > head->item){
       head->dir = removeUtil(head->dir, x);
   }else{
       NO * r = head->dir;
@@ -204,22 +205,22 @@ NO * removeUtil(NO * head, T x){
           head = r;
       }else{
           while(r->esq!=NULL) r = r->esq;
-          head->key = r->key;
-          head->dir = removeUtil(head->dir, r->key);
+          head->item = r->item;
+          head->dir = removeUtil(head->dir, r->item);
       }
   }
   if(head==NULL) return head;
-  head->altura = 1 + max(getAltura(head->esq), getAltura(head->dir));
-  int bal = getAltura(head->esq) - getAltura(head->dir);
-  if(bal>1){
-      if(getAltura(head->esq) >= getAltura(head->dir)){
+  head->altura = altura(head);
+  int fb = altura(head->esq) - altura(head->dir);
+  if(fb > 1){
+      if(altura(head->esq) >= altura(head->dir)){
           return rotacaoDireita(head);
       }else{
           head->esq = rotacaoEsquerda(head->esq);
           return rotacaoDireita(head);
       }
-  }else if(bal < -1){
-      if(getAltura(head->dir) >= getAltura(head->esq)){
+  }else if(fb < -1){
+      if(altura(head->dir) >= altura(head->esq)){
           return rotacaoEsquerda(head);
       }else{
           head->dir = rotacaoDireita(head->dir);
@@ -227,4 +228,4 @@ NO * removeUtil(NO * head, T x){
       }
   }
   return head;
-}*/
+}
