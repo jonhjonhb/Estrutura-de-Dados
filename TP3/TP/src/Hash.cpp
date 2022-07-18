@@ -14,7 +14,7 @@ int HashLista::funcaohash(int chave) {
 
 int HashLista::insere(int chave, Email v) {
   int pos = funcaohash(chave);
-  avl[pos].inserir(v.getChave(), v); // insere item na lista
+  avl[pos].inserir(v); // insere item na lista
   if ( !ocupado[pos] ) ocupado[pos] = true;
   return pos;
 }
@@ -24,18 +24,10 @@ bool HashLista::apaga(int chave, Email v) {
   if (pos == -1){
     return false;
   } else {
-    avl[pos].remover(chave, v);
+    avl[pos].remover(v);
     return true;
   }
 }
-
-// void HashLista::imprime() {
-//   for (int i=0; i<tam_max; i++) { 
-//     cout << "\n HASH[" << i << "] -> ";
-//     if ( ocupado[i] ) avl[i].caminhar();
-//     cout << "NULL";
-//   }
-// }
 
 int HashLista::busca(int chave, Email v) {
   int pos = funcaohash(chave);

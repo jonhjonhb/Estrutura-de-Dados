@@ -1,32 +1,32 @@
 #include "ArvoreB.hpp"
 
-void ArvoreBinaria::inserir(int chave, Email v) {
+void ArvoreBinaria::inserir(Email v) {
   NO *novo = new NO();
-  novo->item = v; // atribui o valor recebido ao item de dados do Nó
+  novo->item = v;
   novo->dir = NULL;
   novo->esq = NULL;
   if (raiz == NULL) raiz = novo;
-  else  { // se nao for a raiz
+  else  {
     NO *atual = raiz;
     NO *anterior;
-    while(true) {
+    while(1) {
       anterior = atual;
-      if (v <= atual->item) { // ir para esquerda
+      if (v <= atual->item) { // navegar para a esquerda
         atual = atual->esq;
         if (atual == NULL) {
           anterior->esq = novo;
           return;
         } 
-      }  // fim da condição ir a esquerda
-      else { // ir para direita
-          atual = atual->dir;
-          if (atual == NULL) {
-            anterior->dir = novo;
-            return;
-          }
-      } // fim da condição ir a direita
-    } // fim do laço while
-  } // fim do else não raiz
+      }
+      else { // navegar para a direita
+        atual = atual->dir;
+        if (atual == NULL) {
+          anterior->dir = novo;
+          return;
+        }
+      }
+    }
+  }
 }
 
 NO * ArvoreBinaria::buscar(Email chave) {  
@@ -46,22 +46,22 @@ std::string ArvoreBinaria::consulta(Email chave) {
   else return atual->item.getMensagem();
 }
 
-bool ArvoreBinaria::remover(int chave, Email v) {
+bool ArvoreBinaria::remover(Email v) {
   if (raiz == NULL) return false;
   NO *atual = raiz;
   NO *pai = raiz;
   bool filho_esq = true;
-  while (atual->item != v) { // enquanto nao encontrou
+  while (atual->item != v) { // enquanto diferente
     pai = atual;
-    if(v < atual->item ) { // caminha para esquerda
+    if(v < atual->item ) { // caminha para a aesquerda
       atual = atual->esq;
       filho_esq = true;
     }
-    else { // caminha para direita
+    else { // caminha para a direita
       atual = atual->dir; 
       filho_esq = false;
     }
-    if (atual == NULL) return false; // encontrou uma folha -> sai
+    if (atual == NULL) return false;
   }
 
   // se chegou aqui encontrou o valor (v)
@@ -104,7 +104,7 @@ bool ArvoreBinaria::remover(int chave, Email v) {
   return true;
 }
 
-NO * ArvoreBinaria::no_sucessor(NO *apaga) { // O parametro é a referencia para o No que deseja-se apagar
+NO * ArvoreBinaria::no_sucessor(NO *apaga) {
 // O sucessor é o Nó mais a esquerda da subarvore a direita do No que foi passado como parametro do metodo
     NO *paidosucessor = apaga;
     NO *sucessor = apaga;
@@ -142,58 +142,26 @@ int ArvoreBinaria::altura(NO *atual) {
     }
 }
 
-int ArvoreBinaria::folhas(NO *atual) {
-  if(atual == NULL) return 0;
-  if(atual->esq == NULL && atual->dir == NULL) return 1;
-  return folhas(atual->esq) + folhas(atual->dir);
+NO * ArvoreBinaria::rotacaoDireita(NO * head){
+  NO * novoHead = head->esq;
+  head->esq = novoHead->dir;
+  novoHead->dir = head;
+  head->altura = altura(head);
+  novoHead->altura = altura(novoHead);
+  return novoHead;
 }
 
-int ArvoreBinaria::contarNos(NO *atual) {
-  if(atual == NULL)  return 0;
-  else return ( 1 + contarNos(atual->esq) + contarNos(atual->dir));
-}
-
-Email ArvoreBinaria::min() {
-  NO *atual = raiz;
-  NO *anterior = NULL;
-  while (atual != NULL) {
-    anterior = atual;
-    atual = atual->esq;
-  }
-  return anterior->item;
-}
-
-Email ArvoreBinaria::max() {
-  NO *atual = raiz;
-  NO *anterior = NULL;
-  while (atual != NULL) {
-    anterior = atual;
-    atual = atual->dir;
-  }
-  return anterior->item;
+NO * ArvoreBinaria::rotacaoEsquerda(NO * head){
+  NO * novoHead = head->dir;
+  head->dir = novoHead->esq;
+  novoHead->esq = head;
+  head->altura = altura(head);
+  novoHead->altura = altura(novoHead);
+  return novoHead;
 }
 /*
-NO * ArvoreBinaria::rightRotation(NO * head){
-  NO * newhead = head->esq;
-  head->esq = newhead->dir;
-  newhead->dir = head;
-  head->altura = 1+max(getAltura(head->esq), getAltura(head->dir));
-  newhead->altura = 1+max(getAltura(newhead->esq), getAltura(newhead->dir));
-  return newhead;
-}
-
-NO * leftRotation(NO * head){
-  NO * newhead = head->dir;
-  head->dir = newhead->esq;
-  newhead->esq = head;
-  head->altura = 1+max(getAltura(head->esq), getAltura(head->dir));
-  newhead->altura = 1+max(getAltura(newhead->esq), getAltura(newhead->dir));
-  return newhead;
-}
-
 NO * insertUtil(NO * head, T x){
   if(head==NULL){
-      n+=1;
       NO * temp = new NO(x);
       return temp;
   }
@@ -203,17 +171,17 @@ NO * insertUtil(NO * head, T x){
   int bal = getAltura(head->esq) - getAltura(head->dir);
   if(bal>1){
       if(x < head->esq->key){
-          return rightRotation(head);
+          return rotacaoDireita(head);
       }else{
-          head->esq = leftRotation(head->esq);
-          return rightRotation(head);
+          head->esq = rotacaoEsquerda(head->esq);
+          return rotacaoDireita(head);
       }
   }else if(bal<-1){
       if(x > head->dir->key){
-          return leftRotation(head);
+          return rotacaoEsquerda(head);
       }else{
-          head->dir = rightRotation(head->dir);
-          return leftRotation(head);
+          head->dir = rotacaoDireita(head->dir);
+          return rotacaoEsquerda(head);
       }
   }
   return head;
@@ -245,17 +213,17 @@ NO * removeUtil(NO * head, T x){
   int bal = getAltura(head->esq) - getAltura(head->dir);
   if(bal>1){
       if(getAltura(head->esq) >= getAltura(head->dir)){
-          return rightRotation(head);
+          return rotacaoDireita(head);
       }else{
-          head->esq = leftRotation(head->esq);
-          return rightRotation(head);
+          head->esq = rotacaoEsquerda(head->esq);
+          return rotacaoDireita(head);
       }
   }else if(bal < -1){
       if(getAltura(head->dir) >= getAltura(head->esq)){
-          return leftRotation(head);
+          return rotacaoEsquerda(head);
       }else{
-          head->dir = rightRotation(head->dir);
-          return leftRotation(head);
+          head->dir = rotacaoDireita(head->dir);
+          return rotacaoEsquerda(head);
       }
   }
   return head;

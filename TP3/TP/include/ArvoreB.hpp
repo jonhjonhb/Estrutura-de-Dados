@@ -17,19 +17,15 @@ class NO {
 class ArvoreBinaria {
   public:
     ArvoreBinaria():raiz(NULL){}
-    void inserir(int chave, Email v);
+    void inserir(Email v);
     NO *buscar(Email chave);
     NO *getRaiz(){return raiz;};
-    bool remover(int chave, Email v);
+    bool remover(Email v);
     std::string consulta(Email chave);
-    // void caminhar();
-    Email min();
-    Email max();
   private:
-    NO * rightRotation(NO * head);
+    NO * rotacaoDireita(NO * head);
+    NO * rotacaoEsquerda(NO * head);
     int altura(NO *atual);
-    int folhas(NO *atual);
-    int contarNos(NO *atual);
     NO *no_sucessor(NO *apaga);
     NO *raiz;
 };
