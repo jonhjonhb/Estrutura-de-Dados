@@ -16,14 +16,14 @@ class NO {
 class ArvoreBinaria {
   public:
     ArvoreBinaria():raiz(NULL){}
-    void inserir(Email v){raiz = insertUtil(raiz, v);};
-    void remover(Email v){raiz = removeUtil(raiz, v);};
+    void inserir(Email v){raiz = insereRecursivo(raiz, v);};
+    void remover(Email v){raiz = removeRecursivo(raiz, v);};
     NO *buscar(Email chave);
     NO *getRaiz(){return raiz;};
     std::string consulta(Email chave);
   private:
-    NO * insertUtil(NO * head, Email x);
-    NO * removeUtil(NO * head, Email x);
+    NO * insereRecursivo(NO * head, Email x);
+    NO * removeRecursivo(NO * head, Email x);
     NO * rotacaoDireita(NO * head);
     NO * rotacaoEsquerda(NO * head);
     int altura(NO *atual);
