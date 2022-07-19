@@ -7,6 +7,8 @@ using namespace std;
 class NO {
   public:
     NO():esq(NULL), dir(NULL), altura(0){}
+    Email getData() const { LEMEMLOG((long int)(this),sizeof(NO*),0); return item;};
+    void setData(Email const x) { ESCREVEMEMLOG((long int)(this),sizeof(NO*),0); item = x;};
     Email item;
     NO *esq;
     NO *dir;

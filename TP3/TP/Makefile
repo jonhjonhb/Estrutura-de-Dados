@@ -32,39 +32,41 @@ AUTOTESTE = ../testes/comparator
 
 all: tp3 bin
 
+gp: tp3
+	$(EXE) -i ../testes/input/input_NumUsers1.txt -o ../testes/outputs/input_NumUsers1.txt -p ../temp/NumUsers1.txt
+	gprof $(EXE) gmon.out > ../temp/GprofNumUsers1.txt
+	$(EXE) -i ../testes/input/input_NumUsers2.txt -o ../testes/outputs/input_NumUsers2.txt -p ../temp/NumUsers2.txt
+	gprof $(EXE) gmon.out > ../temp/GprofNumUsers2.txt
+	$(EXE) -i ../testes/input/input_NumUsers3.txt -o ../testes/outputs/input_NumUsers3.txt -p ../temp/NumUsers3.txt
+	gprof $(EXE) gmon.out > ../temp/GprofNumUsers3.txt
+	$(EXE) -i ../testes/input/input_Msg1.txt -o ../testes/outputs/input_Msg1.txt -p ../temp/Msg1.txt
+	gprof $(EXE) gmon.out > ../temp/GprofMsg1.txt
+	$(EXE) -i ../testes/input/input_Msg2.txt -o ../testes/outputs/input_Msg2.txt -p ../temp/Msg2.txt
+	gprof $(EXE) gmon.out > ../temp/GprofMsg2.txt
+	$(EXE) -i ../testes/input/input_Msg3.txt -o ../testes/outputs/input_Msg3.txt -p ../temp/Msg3.txt
+	gprof $(EXE) gmon.out > ../temp/GprofMsg3.txt
+	$(EXE) -i ../testes/input/input_tamMsg1.txt -o ../testes/outputs/input_tamMsg1.txt -p ../temp/_tamMsg1.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg1.txt
+	$(EXE) -i ../testes/input/input_tamMsg2.txt -o ../testes/outputs/input_tamMsg2.txt -p ../temp/_tamMsg2.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg2.txt
+	$(EXE) -i ../testes/input/input_tamMsg3.txt -o ../testes/outputs/input_tamMsg3.txt -p ../temp/_tamMsg3.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg3.txt
+
 comp: tp3
 	$(EXE) -i ../testes/input/entrada_1.txt -o ../testes/outputs/teste_1.txt -p ../temp/test.txt
 	$(EXE) -i ../testes/input/entrada_2.txt -o ../testes/outputs/teste_2.txt -p ../temp/test.txt
 	$(EXE) -i ../testes/input/entrada_3.txt -o ../testes/outputs/teste_3.txt -p ../temp/test.txt
 	$(EXE) -i ../testes/input/entrada_4.txt -o ../testes/outputs/teste_4.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_5.txt -o ../testes/outputs/teste_5.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_6.txt -o ../testes/outputs/teste_6.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_7.txt -o ../testes/outputs/teste_7.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_8.txt -o ../testes/outputs/teste_8.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_9.txt -o ../testes/outputs/teste_9.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_10.txt -o ../testes/outputs/teste_10.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_11.txt -o ../testes/outputs/teste_11.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_12.txt -o ../testes/outputs/teste_12.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_13.txt -o ../testes/outputs/teste_13.txt -p ../temp/test.txt
 	$(AUTOTESTE) -1 ../testes/outputs/teste_1.txt -2 ../testes/resposta/saida_1.txt
 	$(AUTOTESTE) -1 ../testes/outputs/teste_2.txt -2 ../testes/resposta/saida_2.txt 
 	$(AUTOTESTE) -1 ../testes/outputs/teste_3.txt -2 ../testes/resposta/saida_3.txt
 	$(AUTOTESTE) -1 ../testes/outputs/teste_4.txt -2 ../testes/resposta/saida_4.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_5.txt -2 ../testes/outputs/teste_5.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_6.txt -2 ../testes/outputs/teste_6.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_7.txt -2 ../testes/outputs/teste_7.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_8.txt -2 ../testes/outputs/teste_8.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_9.txt -2 ../testes/outputs/teste_9.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_10.txt -2 ../testes/outputs/teste_10.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_11.txt -2 ../testes/outputs/teste_11.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_12.txt -2 ../testes/outputs/teste_12.txt
-	$(AUTOTESTE) -1 ../testes/resposta/teste_13.txt -2 ../testes/outputs/teste_13.txt
 
 clean:
 	rm -f $(OBJ)/* $(BIN)/* *.out ../temp/*
 
 jogar: $(EXE)
-	$(EXE) -p ../temp/gprofTeste.out -i entrada.txt -o saida.txt -l
+	$(EXE) -p ../temp/partidagprof.out -i entrada.txt -o saida.txt -l
 
 gdb: $(EXE) 
 	gdb $(EXE)

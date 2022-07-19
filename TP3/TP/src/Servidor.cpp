@@ -51,6 +51,8 @@ void parse_args(int argc,char ** argv)
 			 switch(c) {
 				 case 'p':
             strcpy(logName,optarg);
+						 erroAssert(strlen(logName)>0,
+							 "analisador - nome de arquivo de registro de acesso tem que ser definido");
             break;
 				 case 'i':
             fileNameInput = optarg;
@@ -67,8 +69,6 @@ void parse_args(int argc,char ** argv)
             break;
 			 }
 			 // verificacao da consistencia das opcoes
-			 erroAssert(strlen(logName)>0,
-				 "analisador - nome de arquivo de registro de acesso tem que ser definido");
 			 erroAssert(fileNameInput != "",
 				 "analisador - nome do arquivo de entrada tem que ser definido");
 			 erroAssert(fileNameOutput != "",

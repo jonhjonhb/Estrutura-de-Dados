@@ -3,8 +3,8 @@
 NO * ArvoreBinaria::buscar(Email chave) {  
   if (raiz == NULL) return NULL;
   NO *atual = raiz;
-  while (atual->item != chave) {
-    if(chave < atual->item ) atual = atual->esq;
+  while (chave != atual->getData()) {
+    if(chave < atual->getData() ) atual = atual->esq;
     else atual = atual->dir;
     if (atual == NULL) return NULL;
   }
@@ -14,7 +14,7 @@ NO * ArvoreBinaria::buscar(Email chave) {
 std::string ArvoreBinaria::consulta(Email chave) {
   NO *atual = buscar(chave);
   if(atual == NULL) return "MENSAGEM INEXISTENTE";
-  else return atual->item.getMensagem();
+  else return atual->getData().getMensagem();
 }
 
 NO * ArvoreBinaria::no_sucessor(NO *apaga) {
@@ -75,23 +75,23 @@ NO * ArvoreBinaria::rotacaoEsquerda(NO * head){
 
 NO * ArvoreBinaria::insereRecursivo(NO * head, Email x){
   if(head==NULL){
-      NO * temp = new NO();
-      temp->item = x;
-      return temp;
+    NO * temp = new NO();
+    temp->setData(x);
+    return temp;
   }
-  if(x < head->item) head->esq = insereRecursivo(head->esq, x);
-  else if(x > head->item) head->dir = insereRecursivo(head->dir, x);
+  if(x < head->getData()) head->esq = insereRecursivo(head->esq, x);
+  else if(x > head->getData()) head->dir = insereRecursivo(head->dir, x);
   head->altura = altura(head);
   int fb = altura(head->esq) - altura(head->dir);
   if(fb > 1){
-    if(x < head->esq->item){
+    if(x < head->esq->getData()){
         return rotacaoDireita(head);
     }else{
         head->esq = rotacaoEsquerda(head->esq);
         return rotacaoDireita(head);
     }
   }else if(fb < -1){
-    if(x > head->dir->item){
+    if(x > head->dir->getData()){
         return rotacaoEsquerda(head);
     }else{
         head->dir = rotacaoDireita(head->dir);
@@ -103,9 +103,9 @@ NO * ArvoreBinaria::insereRecursivo(NO * head, Email x){
 
 NO * ArvoreBinaria::removeRecursivo(NO * head, Email x){
   if(head==NULL) return NULL;
-  if(x < head->item){
+  if(x < head->getData()){
       head->esq = removeRecursivo(head->esq, x);
-  }else if(x > head->item){
+  }else if(x > head->getData()){
       head->dir = removeRecursivo(head->dir, x);
   }else{
       NO * r = head->dir;
@@ -118,8 +118,8 @@ NO * ArvoreBinaria::removeRecursivo(NO * head, Email x){
           head = r;
       }else{
           while(r->esq!=NULL) r = r->esq;
-          head->item = r->item;
-          head->dir = removeRecursivo(head->dir, r->item);
+          head->getData() = r->getData();
+          head->dir = removeRecursivo(head->dir, r->getData());
       }
   }
   if(head==NULL) return head;
