@@ -17,33 +17,6 @@ std::string ArvoreBinaria::consulta(Email chave) {
   else return atual->getData().getMensagem();
 }
 
-NO * ArvoreBinaria::no_sucessor(NO *apaga) {
-// O sucessor é o Nó mais a esquerda da subarvore a direita do No que foi passado como parametro do metodo
-    NO *paidosucessor = apaga;
-    NO *sucessor = apaga;
-    NO *atual = apaga->dir; // vai para a subarvore a direita
-
-    while (atual != NULL) { // enquanto nao chegar no Nó mais a esquerda
-      paidosucessor = sucessor;
-      sucessor = atual;
-      atual = atual->esq; // caminha para a esquerda
-    } 
-    // *********************************************************************************
-    // quando sair do while "sucessor" será o Nó mais a esquerda da subarvore a direita
-    // "paidosucessor" será o o pai de sucessor e "apaga" o Nó que deverá ser eliminado
-    // *********************************************************************************
-    if (sucessor != apaga->dir) { // se sucessor nao é o filho a direita do Nó que deverá ser eliminado
-      paidosucessor->esq = sucessor->dir; // pai herda os filhos do sucessor que sempre serão a direita
-      // lembrando que o sucessor nunca poderá ter filhos a esquerda, pois, ele sempre será o
-      // Nó mais a esquerda da subarvore a direita do Nó apaga.
-      // lembrando também que sucessor sempre será o filho a esquerda do pai
-
-      sucessor->dir = apaga->dir; // guardando a referencia a direita do sucessor para 
-                                // quando ele assumir a posição correta na arvore
-    }
-    return sucessor;
-}
-
 int ArvoreBinaria::altura(NO *atual) {
     if(atual == NULL || (atual->esq == NULL && atual->dir == NULL))
       return 0;

@@ -29,6 +29,5 @@ class ArvoreBinaria {
     NO * rotacaoDireita(NO * head);
     NO * rotacaoEsquerda(NO * head);
     int altura(NO *atual);
-    NO *no_sucessor(NO *apaga);
     NO *raiz;
 };
