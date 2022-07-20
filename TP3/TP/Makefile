@@ -27,7 +27,7 @@ HDRSM = $(INC)/msgassert.h
 CFLAGS = $(FER) -Wall -c -I$(INC)
 ANALISAMEM = ../../aulapratica2/analisamem/bin/analisamem
 
-EXE = $(BIN)/tp3
+EXE = $(BIN)/tp3.exe
 TST = ../testes
 AUTOTESTE = $(TST)/comparator
 
