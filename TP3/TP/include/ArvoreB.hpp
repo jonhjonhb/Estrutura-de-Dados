@@ -1,6 +1,5 @@
-#include <iostream>
-#include <stdlib.h>
 #include "Email.hpp"
+#include "memlog.hpp"
 
 using namespace std;
 

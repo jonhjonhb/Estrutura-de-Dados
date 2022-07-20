@@ -40,13 +40,16 @@ std::string HashLista::request(std::string metod, int U, int E, std::string msg 
     pos = insere(U, novo);
     resposta = "OK: MENSAGEM " + to_string(E) + " PARA ";
     resposta += to_string(U) + " ARMAZENADA EM " + to_string(pos);
-  } else if (metod == "CONSULTA") {
+  }
+  else if (metod == "CONSULTA") {
     pos = funcaohash(U);
     resposta = "CONSULTA " + to_string(U) + " " + to_string(E) + ": ";
     resposta += avl[pos].consulta(novo);
-  } else if (metod == "APAGA") {
+  } 
+  else if (metod == "APAGA") {
     if (apaga(U, novo)) resposta = "OK: MENSAGEM APAGADA";
     else resposta = "ERRO: MENSAGEM INEXISTENTE";      
   }
+  
   return resposta + "\n";
 }

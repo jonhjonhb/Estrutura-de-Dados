@@ -2,8 +2,6 @@
 #define EMAIL_H
 
 #include <string>
-#include "msgassert.h"
-#include "memlog.hpp"
 
 class Email{
   public:

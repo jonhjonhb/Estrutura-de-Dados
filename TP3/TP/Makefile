@@ -28,39 +28,78 @@ CFLAGS = $(FER) -Wall -c -I$(INC)
 ANALISAMEM = ../../aulapratica2/analisamem/bin/analisamem
 
 EXE = $(BIN)/tp3
-AUTOTESTE = ../testes/comparator
+TST = ../testes
+AUTOTESTE = $(TST)/comparator
 
 all: tp3 bin
 
-gp: tp3
-	$(EXE) -i ../testes/input/input_NumUsers1.txt -o ../testes/outputs/input_NumUsers1.txt -p ../temp/NumUsers1.txt
+desempenho: tp3 gpNumUser gpMsg gpTamMsg gpDist
+
+gpNumUser:
+	$(EXE) -i $(TST)/input/input_NumUsers1.txt -o $(TST)/outputs/input_NumUsers1.txt -p ../temp/NumUsers1.txt
 	gprof $(EXE) gmon.out > ../temp/GprofNumUsers1.txt
-	$(EXE) -i ../testes/input/input_NumUsers2.txt -o ../testes/outputs/input_NumUsers2.txt -p ../temp/NumUsers2.txt
+	$(EXE) -i $(TST)/input/input_NumUsers2.txt -o $(TST)/outputs/input_NumUsers2.txt -p ../temp/NumUsers2.txt
 	gprof $(EXE) gmon.out > ../temp/GprofNumUsers2.txt
-	$(EXE) -i ../testes/input/input_NumUsers3.txt -o ../testes/outputs/input_NumUsers3.txt -p ../temp/NumUsers3.txt
+	$(EXE) -i $(TST)/input/input_NumUsers3.txt -o $(TST)/outputs/input_NumUsers3.txt -p ../temp/NumUsers3.txt
 	gprof $(EXE) gmon.out > ../temp/GprofNumUsers3.txt
-	$(EXE) -i ../testes/input/input_Msg1.txt -o ../testes/outputs/input_Msg1.txt -p ../temp/Msg1.txt
+
+gpMsg:
+	$(EXE) -i $(TST)/input/input_Msg1.txt -o $(TST)/outputs/input_Msg1.txt -p ../temp/Msg1.txt
 	gprof $(EXE) gmon.out > ../temp/GprofMsg1.txt
-	$(EXE) -i ../testes/input/input_Msg2.txt -o ../testes/outputs/input_Msg2.txt -p ../temp/Msg2.txt
+	$(EXE) -i $(TST)/input/input_Msg2.txt -o $(TST)/outputs/input_Msg2.txt -p ../temp/Msg2.txt
 	gprof $(EXE) gmon.out > ../temp/GprofMsg2.txt
-	$(EXE) -i ../testes/input/input_Msg3.txt -o ../testes/outputs/input_Msg3.txt -p ../temp/Msg3.txt
+	$(EXE) -i $(TST)/input/input_Msg3.txt -o $(TST)/outputs/input_Msg3.txt -p ../temp/Msg3.txt
 	gprof $(EXE) gmon.out > ../temp/GprofMsg3.txt
-	$(EXE) -i ../testes/input/input_tamMsg1.txt -o ../testes/outputs/input_tamMsg1.txt -p ../temp/_tamMsg1.txt
+
+gpTamMsg:
+	$(EXE) -i $(TST)/input/input_tamMsg1.txt -o $(TST)/outputs/input_tamMsg1.txt -p ../temp/tamMsg1.txt
 	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg1.txt
-	$(EXE) -i ../testes/input/input_tamMsg2.txt -o ../testes/outputs/input_tamMsg2.txt -p ../temp/_tamMsg2.txt
+	$(EXE) -i $(TST)/input/input_tamMsg2.txt -o $(TST)/outputs/input_tamMsg2.txt -p ../temp/tamMsg2.txt
 	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg2.txt
-	$(EXE) -i ../testes/input/input_tamMsg3.txt -o ../testes/outputs/input_tamMsg3.txt -p ../temp/_tamMsg3.txt
+	$(EXE) -i $(TST)/input/input_tamMsg3.txt -o $(TST)/outputs/input_tamMsg3.txt -p ../temp/tamMsg3.txt
 	gprof $(EXE) gmon.out > ../temp/Gprof_tamMsg3.txt
 
+gpDist:
+	$(EXE) -i $(TST)/input/dist_20-20_1.txt -o $(TST)/outputs/dist_20-20_1.txt -p ../temp/dist_20-20_1.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_20-20_1.txt
+	$(EXE) -i $(TST)/input/dist_20-20_2.txt -o $(TST)/outputs/dist_20-20_2.txt -p ../temp/dist_20-20_2.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_20-20_2.txt
+	$(EXE) -i $(TST)/input/dist_20-20_3.txt -o $(TST)/outputs/dist_20-20_3.txt -p ../temp/dist_20-20_3.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_20-20_3.txt
+	$(EXE) -i $(TST)/input/dist_20-20_4.txt -o $(TST)/outputs/dist_20-20_4.txt -p ../temp/dist_20-20_4.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_20-20_4.txt
+	$(EXE) -i $(TST)/input/dist_20-20_5.txt -o $(TST)/outputs/dist_20-20_5.txt -p ../temp/dist_20-20_5.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_20-20_5.txt
+	$(EXE) -i $(TST)/input/dist_100-0_1.txt -o $(TST)/outputs/dist_100-0_1.txt -p ../temp/dist_100-0_1.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_100-0_1.txt
+	$(EXE) -i $(TST)/input/dist_100-0_2.txt -o $(TST)/outputs/dist_100-0_2.txt -p ../temp/dist_100-0_2.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_100-0_2.txt
+	$(EXE) -i $(TST)/input/dist_100-0_3.txt -o $(TST)/outputs/dist_100-0_3.txt -p ../temp/dist_100-0_3.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_100-0_3.txt
+	$(EXE) -i $(TST)/input/dist_100-0_4.txt -o $(TST)/outputs/dist_100-0_4.txt -p ../temp/dist_100-0_4.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_100-0_4.txt
+	$(EXE) -i $(TST)/input/dist_100-0_5.txt -o $(TST)/outputs/dist_100-0_5.txt -p ../temp/dist_100-0_5.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_100-0_5.txt
+	$(EXE) -i $(TST)/input/dist_0-100_1.txt -o $(TST)/outputs/dist_0-100_1.txt -p ../temp/dist_0-100_1.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_0-100_1.txt
+	$(EXE) -i $(TST)/input/dist_0-100_2.txt -o $(TST)/outputs/dist_0-100_2.txt -p ../temp/dist_0-100_2.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_0-100_2.txt
+	$(EXE) -i $(TST)/input/dist_0-100_3.txt -o $(TST)/outputs/dist_0-100_3.txt -p ../temp/dist_0-100_3.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_0-100_3.txt
+	$(EXE) -i $(TST)/input/dist_0-100_4.txt -o $(TST)/outputs/dist_0-100_4.txt -p ../temp/dist_0-100_4.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_0-100_4.txt
+	$(EXE) -i $(TST)/input/dist_0-100_5.txt -o $(TST)/outputs/dist_0-100_5.txt -p ../temp/dist_0-100_5.txt
+	gprof $(EXE) gmon.out > ../temp/Gprof_dist_0-100_5.txt
+
 comp: tp3
-	$(EXE) -i ../testes/input/entrada_1.txt -o ../testes/outputs/teste_1.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_2.txt -o ../testes/outputs/teste_2.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_3.txt -o ../testes/outputs/teste_3.txt -p ../temp/test.txt
-	$(EXE) -i ../testes/input/entrada_4.txt -o ../testes/outputs/teste_4.txt -p ../temp/test.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_1.txt -2 ../testes/resposta/saida_1.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_2.txt -2 ../testes/resposta/saida_2.txt 
-	$(AUTOTESTE) -1 ../testes/outputs/teste_3.txt -2 ../testes/resposta/saida_3.txt
-	$(AUTOTESTE) -1 ../testes/outputs/teste_4.txt -2 ../testes/resposta/saida_4.txt
+	$(EXE) -i $(TST)/input/entrada_1.txt -o $(TST)/outputs/teste_1.txt -p ../temp/test.txt
+	$(EXE) -i $(TST)/input/entrada_2.txt -o $(TST)/outputs/teste_2.txt -p ../temp/test.txt
+	$(EXE) -i $(TST)/input/entrada_3.txt -o $(TST)/outputs/teste_3.txt -p ../temp/test.txt
+	$(EXE) -i $(TST)/input/entrada_4.txt -o $(TST)/outputs/teste_4.txt -p ../temp/test.txt
+	$(AUTOTESTE) -1 $(TST)/outputs/teste_1.txt -2 $(TST)/resposta/saida_1.txt
+	$(AUTOTESTE) -1 $(TST)/outputs/teste_2.txt -2 $(TST)/resposta/saida_2.txt 
+	$(AUTOTESTE) -1 $(TST)/outputs/teste_3.txt -2 $(TST)/resposta/saida_3.txt
+	$(AUTOTESTE) -1 $(TST)/outputs/teste_4.txt -2 $(TST)/resposta/saida_4.txt
 
 clean:
 	rm -f $(OBJ)/* $(BIN)/* *.out ../temp/*
@@ -102,7 +141,7 @@ performance: gerador
 gprof:
 	gprof $(EXE) gmon.out > ../temp/gprof.txt
 
-perf:
+perf: jogar
 	$(ANALISAMEM) -i ../temp/partidagprof.out -p ../temp/perf
 	gnuplot ../temp/*.gp
 
